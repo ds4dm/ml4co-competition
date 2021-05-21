@@ -1,28 +1,16 @@
-# Docker evaluation environment
+# Evaluation environment
 
-## Setup
+* `build-venv-ecole.sh` creates a virtual environment with SCIP + ecole
+installed. Requires `download-libs.sh` run first to get remote packages.
+* `Dockerfile` is mainly there to test the virtualenv build; may be useful
+to provide to participants so that it's clear what headers/libraries are
+available for any python packages they might install?
 
-Dockerfile here builds a base image with SCIP + Ecole.
-
-Thinking that participant's code should be copied on top of this base image to
-create their submission environment, perhaps with an additional requirements.txt
-file allowed to pull any necessary packages?
-
-The participant-specific image can then be run on a given test set via an
-evaluation script. Participant code should expose their branching environment
-(standard path or package name?) so it can be run on different instances.
-
-Just the basics so far; the following works:
-
-    bash download-libs.sh    # Source/built archives needed to build and run.
-    docker build -t ecole .  # Build tagged image.
-    docker run -it ecole     # Quick test script from the docs.
+Participants code might be allowed to provide an additional requirements.txt
+for packages to be installed. Beyond that it should be runnable in this
+virtualenv as-is.
 
 ## To Do
 
 * Add some standard packages beyond numpy/scipy to ensure common usage is
-supported.
-* Tighten privileges & permissions.
-* Add evaluation script to mount directory of test instances and collect timing
-statistics.
-* Clean up image.
+supported?
