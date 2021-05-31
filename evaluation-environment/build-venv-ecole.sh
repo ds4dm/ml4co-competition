@@ -18,8 +18,8 @@ pip install numpy==1.20.2 scipy==1.6.3
 rm -rf ecole
 tar xf v0.6.0.tar.gz
 
-# Build ecole against SCIP 
+# Build ecole against SCIP
 cd ecole-0.6.0/
 SCIP_DIR=$(pwd)/venv/lib/cmake/scip cmake -B build/
 cmake --build build/ --parallel
-pip install build/python
+pip install --use-feature=in-tree-build build/python

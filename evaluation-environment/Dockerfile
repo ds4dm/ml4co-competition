@@ -34,4 +34,5 @@ RUN bash build-venv-ecole.sh
 
 # Placeholder - just run a test script for now, users code to be built-in?
 COPY ecole-test.py ecole-test.py
-CMD python ecole-test.py
+COPY test.sh test.sh
+CMD ./test.sh
