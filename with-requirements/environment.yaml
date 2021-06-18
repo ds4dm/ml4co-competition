@@ -1,0 +1,22 @@
+channels:
+  - conda-forge
+  - defaults
+  - pytorch
+
+dependencies:
+  # Minimal dependencies for the competition
+  - python=3.7
+  - scip=7.0.3
+  - ecole=0.6.2
+  - numpy
+  - pyscipopt
+
+  # Machine learning libraries
+  # - pytorch
+  # - scikit-learn
+  # - tensorflow
+
+  # Compilers and build tools
+  # - cxx-compiler
+  # - make
+  # - cmake

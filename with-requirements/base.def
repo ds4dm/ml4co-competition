@@ -1,0 +1,45 @@
+Bootstrap: library
+From: ubuntu:20.04
+
+%labels
+	Author Antoine Prouvost
+	Version v0.0.1
+
+%help
+	Singularity image used to evaluate submissions to the NeurIPS 2021 ML4CO competition.
+
+%environment
+	# Extremely lazy sourcing of the Conda activation script
+	export PROMPT_COMMAND='source /opt/mamba/init.bash; unset PROMPT_COMMAND'
+
+%post
+	# Minimum requirements for the image
+	apt-get update
+	apt-get install --yes --no-install-recommends wget git openssh-client tar gzip ca-certificates
+	apt-get clean
+
+	# Install Mamba (Conda alternative) through Mambaforge
+	readonly mamba_installer="Mambaforge-$(uname)-$(uname -m).sh"
+	readonly mamba_version="4.10.1-4"
+	readonly mamba_prefix="/opt/mamba"
+	wget "https://github.com/conda-forge/miniforge/releases/download/${mamba_version}/${mamba_installer}"
+	bash "${mamba_installer}" -b -p "${mamba_prefix}"
+	rm "${mamba_installer}"
+
+	# Put the Conda initialization script in a file for lazy loading/
+	# Singularity does all the environment sourcing as shell (only latter calls bash),
+	# which conda does not support.
+	# We put the content in a file, manually call bash, and source it.
+	{
+		echo 'eval "$('/opt/mamba/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"'
+		echo 'if [ $? -eq 0 ]; then'
+		echo '  eval "$__conda_setup"'
+		echo 'else' >> ${mamba_prefix}/init.bash
+		echo '  if [ -f "/opt/mamba/etc/profile.d/conda.sh" ]; then'
+		echo '    . "/opt/mamba/etc/profile.d/conda.sh"'
+		echo '  else'
+		echo '    export PATH="/opt/mamba/bin:$PATH"'
+		echo '  fi'
+		echo 'fi'
+		echo 'unset __conda_setup'
+	} >> ${mamba_prefix}/init.bash
