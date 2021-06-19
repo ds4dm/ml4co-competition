@@ -1,3 +1,0 @@
-91f73c56b090db5fab3e348cbef798df  cmake-3.20.2-linux-x86_64.sh
-2fc08de20b23200269536e8b5f81e534  SCIPOptSuite-7.0.2-Linux-debian.sh
-c433421fbeee77328fe8a2bec15fb76e  v0.6.0.tar.gz
