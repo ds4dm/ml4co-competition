@@ -10,3 +10,8 @@ dependencies:
   - ecole=0.6.2
   - numpy
   - pyscipopt
+
+  # additional dependencies go here
+  # - torch
+  # - tensorflow
+  # - scikit-learn
