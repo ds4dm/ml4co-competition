@@ -11,7 +11,18 @@ dependencies:
   - numpy
   - pyscipopt
 
-  # additional dependencies go here
+  # additional conda dependencies go here
   # - torch
   # - tensorflow
   # - scikit-learn
+
+  # additional pip dependencies go here
+  # - pip
+  # - pip:
+  #   - something
+  #   - git+https://github.com/user/bar
+  #   - url
+
+  # please provide us a snapshot of your environment to help us set up your environment
+  # i.e., submit the output of
+  # conda env export --no-builds

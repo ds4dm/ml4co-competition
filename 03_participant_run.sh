@@ -11,8 +11,8 @@ then
 	exit 1
 fi
 
-export SINGULARITY_HOME=`realpath home/$1`:/home/user
-export SINGULARITY_BIND="$(mktemp -d):/tmp,$(mktemp -d):/var/tmp,$(realpath data/instances):/home/user/instances:ro"
+export SINGULARITY_HOME=`realpath home/$1`
+export SINGULARITY_BIND="$(mktemp -d):/tmp,$(mktemp -d):/var/tmp,$(realpath data/instances):$SINGULARITY_HOME/instances:ro"
 export SINGULARITY_CLEANENV=1
 export SINGULARITY_CONTAINALL=1
 export SINGULARITY_NV=1
