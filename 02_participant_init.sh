@@ -4,7 +4,7 @@ display_usage() {
 	echo -e "Usage: $0 team"
 }
 
-# if less than two arguments supplied, display usage
+# if less than one arguments supplied, display usage
 if [  $# -lt 1 ]
 then
 	display_usage
