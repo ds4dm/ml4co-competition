@@ -1,14 +1,47 @@
+# Evaluation pipeline for the ML4CO competition
 
-The idea is that we have a separate `home/TEAM_NAME` folder for each team, where we put all of their files. They can edit the `environment.yaml` file to install additional conda packages, and optionally the `init.sh` file if they want to install non-conda dependencies (e.g., `pip install ...`). A minimal example is in `home/test/`.
+The idea is that we have a separate `home/TEAM` folder for each team, where we put all of their files. They can edit the `environment.yaml` file to install additional conda or pip packages, and optionally the `init.sh` file if they want to install dependencies manually. A minimal example is in `home/test/`.
 
+## Singularity set-up
+
+Load the Singularity module (must be run every time at login, Compute-Canada only)
 ```bash
 source 00_compute_canada.sh
-sh 01_singularity_build.sh  # build the image, only once
-sh 02_participant_init.sh test  # set up the team dependencies, only once per team. Internet access.
-sh 03_participant_run.sh test  # run the evalution script within the team's environment. No internet access.
 ```
 
-Note: at the moment the `data/instances` directory is absent from the repo. On the competition's cluster it can be recovered using a symlink:
+Build the Singularity image (only once). The script is configured to do the build remotely (--remote), which requires to create a [Sylab account](https://cloud.sylabs.io/home).
+```bash
+sh 01_singularity_build.sh
+```
+
+Note: at the moment the `data/instances` directory is absent from the repo. On the competition's cluster it has to be linked as follows:
 ```bash
 ln -s /project/def-sponsor00/ml4co-competition/instances data/instances
+```
+
+## Team evaluation pipeline
+
+### Team set up (only once per team)
+
+Decide on a team to evaluate, and place their submission in a `home/TEAM` folder.
+```bash
+TEAM=test
+```
+
+Set up an `ml4co` conda environment environment within the team's container, based on the team's `environment.yaml` and `init.sh` files. Requires internet access to download dependencies.
+```bash
+sh 02_participant_init.sh $TEAM
+```
+
+### Team evaluation
+
+Decide on a task and a problem benchmark to evaluate.
+```bash
+TASK=primal  # primal dual config
+PROBLEM=item_placement  # item_placement load_balancing anonymous
+```
+
+Run the evalution script within the team's container. No internet access.
+```bash
+sh 03_participant_run.sh $TEAM $TASK $PROBLEM
 ```
