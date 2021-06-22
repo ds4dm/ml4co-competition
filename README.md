@@ -37,8 +37,8 @@ sh 02_participant_init.sh $TEAM
 
 Decide on a task and a problem benchmark to evaluate.
 ```bash
-TASK=primal  # primal dual config
-PROBLEM=item_placement  # item_placement load_balancing anonymous
+TASK=primal  # primal, dual, config
+PROBLEM=item_placement  # item_placement, load_balancing, anonymous
 ```
 
 Run the evalution script within the team's container. No internet access.
