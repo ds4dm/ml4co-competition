@@ -1,6 +1,6 @@
 # Evaluation pipeline for the ML4CO competition
 
-The idea is that we have a separate `home/TEAM` folder for each team, where we put all of their files. They can edit the `environment.yaml` file to install additional conda or pip packages, and optionally the `init.sh` file if they want to install dependencies manually. A minimal example is in `home/test/`.
+The idea is that we have a separate `home/TEAM` folder for each team, where we put all of their files. They can edit the `conda.yaml` file to install additional conda or pip packages, and optionally the `init.sh` file if they want to install dependencies manually. A minimal example is in `home/test/`.
 
 ## Singularity set-up
 
@@ -28,7 +28,7 @@ Decide on a team to evaluate, and place their submission in a `home/TEAM` folder
 TEAM=test
 ```
 
-Set up an `ml4co` conda environment environment within the team's container, based on the team's `environment.yaml` and `init.sh` files. Requires internet access to download dependencies.
+Set up an `ml4co` conda environment within the team's container, based on the team's `conda.yaml` and `init.sh` files. Requires internet access to download dependencies.
 ```bash
 sh 02_participant_init.sh $TEAM
 ```

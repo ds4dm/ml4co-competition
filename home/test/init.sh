@@ -1,6 +1,6 @@
 source /opt/mamba/init.bash
 conda env remove -n ml4co
-conda env create -n ml4co -f environment.yaml
+conda env create -n ml4co -f conda.yaml
 conda activate ml4co
 # installation commands for additional dependencies can go here
 
