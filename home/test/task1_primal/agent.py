@@ -23,7 +23,9 @@ class ObservationFunction():
         has_lb = np.asarray([lb > -inf for lb in lbs])
         has_ub = np.asarray([ub < inf for ub in ubs])
 
-        return has_lb, has_ub, lbs, ubs
+        observation = (has_lb, has_ub, lbs, ubs)
+
+        return observation
 
 
 class Policy():
