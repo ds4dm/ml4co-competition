@@ -14,6 +14,11 @@ class RootPrimalSearchDynamics(ecole.dynamics.PrimalSearchDynamics):
         # disable SCIP default heuristics
         pyscipopt_model.setHeuristics(PY_SCIP_PARAMSETTING.OFF)
 
+        # disable restarts
+        model.set_params({
+            'estimation/restarts/restartpolicy': 'n',
+        })
+
         # process the root node
         done, action_set = super().reset_dynamics(model)
 
@@ -53,10 +58,6 @@ class RootPrimalSearch(ecole.environment.Environment):
             self.model.set_params(self.scip_params)
 
             # >>> changes specific to this environment
-            self.model.set_params({
-                'estimation/restarts/restartpolicy': 'n',  # disable restarts
-            })
-
             if objective_limit is not None:
                 self.model.as_pyscipopt().setObjlimit(objective_limit)
             # <<<
