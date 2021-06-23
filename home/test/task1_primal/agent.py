@@ -2,7 +2,7 @@ import ecole as ec
 import numpy as np
 
 
-class MyObservationFunction():
+class ObservationFunction():
 
     def __init__(self, problem):
         self.milp_bipartite_func = ec.observation.MilpBipartite(normalize=False) 
@@ -33,7 +33,7 @@ class MyObservationFunction():
         return has_lb, has_ub, lbs, ubs
 
 
-class MyPolicy():
+class Policy():
 
     def __init__(self, problem):
         self.rng = np.random.RandomState()
@@ -43,18 +43,19 @@ class MyPolicy():
         self.rng = np.random.RandomState(seed)
 
     def reset(self):
-        self.history = []
+        # called before an episode starts
+        pass
 
     def __call__(self, action_set, observation):
-        self.history.append(observation)
-
         has_lb, has_ub, lbs, ubs = observation 
 
-        # check for variable lower and upper bounds
+        # safety check: make sure all variables in the action set have lower and upper bounds
         assert all(has_lb[action_set]) and all(has_ub[action_set])
 
         # decide on (partial) variable assignments
         var_ids = action_set
         var_vals = self.rng.randint(lbs[var_ids], ubs[var_ids]+1)  # random sampling
 
-        return var_ids, var_vals
+        action = (var_ids, var_vals)
+
+        return action
