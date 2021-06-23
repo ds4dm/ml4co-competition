@@ -1,17 +1,17 @@
 #!/bin/bash
 
 display_usage() {
-	echo -e "Usage: $0 [gpu,nogpu]"
+	echo -e "Usage: $0 team [gpu,nogpu]"
 }
 
-# if less than one arguments supplied, display usage
-if [  $# -lt 1 ]
+# if less than two arguments supplied, display usage
+if [  $# -lt 2 ]
 then
 	display_usage
 	exit 1
 fi
 
-case $1 in
+case $2 in
     gpu)
         export SINGULARITY_NV=1
         ;;
