@@ -15,7 +15,7 @@ class ObservationFunction():
             return None
 
         m = model.as_pyscipopt()
-        variables = m.getVars()
+        variables = m.getVars(transformed=True)
         inf = m.infinity()
 
         lbs = np.asarray([v.getLbLocal() for v in variables])
