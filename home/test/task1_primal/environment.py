@@ -18,7 +18,7 @@ class DefaultInformationFunction():
 
 class TimeLimitPrimalIntegral(ecole.reward.PrimalIntegral):
 
-    def __init__(self, offset=0, initial_primal_bound=float("Inf")):
+    def __init__(self, offset=None, initial_primal_bound=None):
         self._offset = offset
         self._initial_primal_bound = initial_primal_bound
 
@@ -28,6 +28,13 @@ class TimeLimitPrimalIntegral(ecole.reward.PrimalIntegral):
         # trick to allow the primal bound initial value and offset to be set dynamically
         self.offset = self._offset() if callable(self._offset) else self._offset
         self.initial_primal_bound = self._initial_primal_bound() if callable(self._initial_primal_bound) else self._initial_primal_bound
+
+        # default values if none was provided
+        if self.offset is None:
+            self.offset = 0.0
+
+        if self.initial_primal_bound is None:
+            self.initial_primal_bound = model.as_pyscipopt().getObjlimit()
 
         super().before_reset(model)
 
@@ -39,10 +46,13 @@ class TimeLimitPrimalIntegral(ecole.reward.PrimalIntegral):
             m = model.as_pyscipopt()
             # keep integrating over the time left
             time_left = max(m.getParam("limits/time") - m.getSolvingTime(), 0)
-            primal_bound = m.getPrimalbound()
+            if m.getStage() < pyscipopt.scip.PY_SCIP_STAGE.TRANSFORMED:
+                primal_bound = m.getObjlimit()
+            else:
+                primal_bound = m.getPrimalbound()
 
-            # account for maximization problems
-            if m.getObjectiveSense() == "maximize":
+            # account for objective sense (maximization/minimization)
+            if m.getObjectiveSense() == "minimize":
                 reward += (min(primal_bound, self.initial_primal_bound) - self.offset) * time_left
             else:
                 reward += -(max(primal_bound, self.initial_primal_bound) - self.offset) * time_left
@@ -81,34 +91,3 @@ class RootPrimalSearch(ecole.environment.Environment):
     __Dynamics__ = RootPrimalSearchDynamics
     __DefaultInformationFunction__ = DefaultInformationFunction
 
-    def reset(self, instance, objective_limit=None, *dynamics_args, **dynamics_kwargs):
-        """We add one optional parameter not supported by Ecole yet: the instance's objective limit."""
-        self.can_transition = True
-        try:
-            if isinstance(instance, ecole.core.scip.Model):
-                self.model = instance.copy_orig()
-            else:
-                self.model = ecole.core.scip.Model.from_file(instance)
-            self.model.set_params(self.scip_params)
-
-            # >>> changes specific to this environment
-            if objective_limit is not None:
-                self.model.as_pyscipopt().setObjlimit(objective_limit)
-            # <<<
-
-            self.dynamics.set_dynamics_random_state(self.model, self.random_engine)
-
-            self.observation_function.before_reset(self.model)
-            self.reward_function.before_reset(self.model)
-            self.information_function.before_reset(self.model)
-            done, action_set = self.dynamics.reset_dynamics(
-                self.model, *dynamics_args, **dynamics_kwargs
-            )
-
-            observation = self.observation_function.extract(self.model, done)
-            reward_offset = self.reward_function.extract(self.model, done)
-            information = self.information_function.extract(self.model, done)
-            return observation, action_set, reward_offset, done, information
-        except Exception as e:
-            self.can_transition = False
-            raise e

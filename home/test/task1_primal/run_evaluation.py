@@ -41,14 +41,15 @@ if __name__ == '__main__':
 
     # environment
     time_limit = 10  # 5*60
-    primal_integral_config = {}  # trick to tweak the primal integral computation for each instance (initial primal bound, offset)
+    primal_bound_offset = None  # instance-specific
+    initial_primal_bound = None  # instance-specific
 
     env = environment.RootPrimalSearch(
         time_limit=time_limit,
         observation_function=agent.ObservationFunction(problem=args.problem),
         reward_function=-environment.TimeLimitPrimalIntegral(  # minimize the primal integral <=> negated reward
-            offset=lambda: primal_integral_config["offset"],
-            initial_primal_bound=lambda: primal_integral_config["initial_primal_bound"],
+            offset=lambda: primal_bound_offset,  # trick to set this value dynamically for each instance
+            initial_primal_bound=lambda: initial_primal_bound,  # trick to set this value dynamically for each instance
         ),
     )
 
@@ -65,20 +66,18 @@ if __name__ == '__main__':
         # read the instance's initial primal and dual bounds from JSON file
         with open(instance.with_name(instance.stem).with_suffix('.json')) as f:
             instance_info = json.load(f)
-        initial_pb = instance_info["primal_bound"]
-        initial_db = instance_info["dual_bound"]
+
+        # set up the primal integral computation for that instance (primal bound initial value and offset)
+        initial_primal_bound = instance_info["primal_bound"]
+        primal_bound_offset = 0
 
         print(f"Instance {instance}")
         print(f"  seed: {seed}")
-        print(f"  initial primal bound: {initial_pb}")
-
-        # set up the primal integral computation for that instance (initial primal bound and offset)
-        primal_integral_config["initial_primal_bound"] = initial_pb
-        primal_integral_config["offset"] = 0.0
+        print(f"  initial primal bound: {initial_primal_bound}")
 
         # reset the policy and the environment
         policy.reset()
-        observation, action_set, reward, done, info = env.reset(str(instance), objective_limit=initial_pb)
+        observation, action_set, reward, done, info = env.reset(str(instance))
         if debug:
             print(f"  info: {info}")
             print(f"  reward: {reward}")
@@ -106,7 +105,7 @@ if __name__ == '__main__':
             writer.writerow({
                 'instance': str(instance),
                 'seed': seed,
-                'primal_bound_offset': primal_integral_config["offset"],
-                'initial_primal_bound': primal_integral_config["initial_primal_bound"],
+                'primal_bound_offset': primal_bound_offset,
+                'initial_primal_bound': initial_primal_bound,
                 'primal_integral': -cumulated_reward,
             })
