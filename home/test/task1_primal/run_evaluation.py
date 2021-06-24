@@ -41,13 +41,15 @@ if __name__ == '__main__':
 
     # environment
     time_limit = 10  # 5*60
-    primal_integral_config = {}  # trick to tweak the primal integral computation for each instance (initial primal bound)
-    primal_integral = ec.reward.PrimalIntegral(wall=True, bound_function=lambda model: (primal_integral_config["offset"], primal_integral_config["limit"]))
+    primal_integral_config = {}  # trick to tweak the primal integral computation for each instance (initial primal bound, offset)
 
     env = environment.RootPrimalSearch(
         time_limit=time_limit,
         observation_function=agent.ObservationFunction(problem=args.problem),
-        reward_function=-primal_integral,  # minimization == negated reward
+        reward_function=-environment.TimeLimitPrimalIntegral(  # minimize the primal integral <=> negated reward
+            offset=lambda: primal_integral_config["offset"],
+            initial_primal_bound=lambda: primal_integral_config["initial_primal_bound"],
+        ),
     )
 
     # agent
@@ -70,8 +72,8 @@ if __name__ == '__main__':
         print(f"  seed: {seed}")
         print(f"  initial primal bound: {initial_pb}")
 
-        # set up the primal integral computation for that instance (initial primal bound)
-        primal_integral_config["limit"] = initial_pb
+        # set up the primal integral computation for that instance (initial primal bound and offset)
+        primal_integral_config["initial_primal_bound"] = initial_pb
         primal_integral_config["offset"] = 0.0
 
         # reset the policy and the environment
@@ -96,7 +98,7 @@ if __name__ == '__main__':
 
             cumulated_reward += reward
 
-        print(f"  cumulated reward: {cumulated_reward}")
+        print(f"  primal integral (to be minimized): {-cumulated_reward}")
 
         # save instance results
         with open(results_file, mode='a') as csv_file:
@@ -105,6 +107,6 @@ if __name__ == '__main__':
                 'instance': str(instance),
                 'seed': seed,
                 'primal_bound_offset': primal_integral_config["offset"],
-                'initial_primal_bound': primal_integral_config["limit"],
-                'primal_integral': cumulated_reward,
+                'initial_primal_bound': primal_integral_config["initial_primal_bound"],
+                'primal_integral': -cumulated_reward,
             })

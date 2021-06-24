@@ -4,4 +4,6 @@ conda env create -n ml4co -f conda.yaml
 conda activate ml4co
 # installation commands for additional dependencies can go here
 
-conda install -c conda-forge/label/ecole_dev ecole
+# TODO: remove when 7.0 has been merged in maistream ecole
+conda uninstall ecole -y
+conda install -c conda-forge/label/ecole_dev ecole -y
