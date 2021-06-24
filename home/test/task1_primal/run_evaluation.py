@@ -21,13 +21,13 @@ if __name__ == '__main__':
 
     if args.problem == 'item_placement':
         instance_files = pathlib.Path.cwd().glob('instances/1_item_placement/test/*.mps.gz')
-        results_file = pathlib.Path(f"results/1_item_placement.csv")
+        results_file = pathlib.Path(f"task1_primal/results/1_item_placement.csv")
     elif args.problem == 'load_balancing':
         instance_files = pathlib.Path.cwd().glob('instances/2_load_balancing/test/*.mps.gz')
-        results_file = pathlib.Path(f"results/2_load_balancing.csv")
+        results_file = pathlib.Path(f"task1_primal/results/2_load_balancing.csv")
     elif args.problem == 'anonymous':
         instance_files = pathlib.Path.cwd().glob('instances/3_anonymous/test/*.mps.gz')
-        results_file = pathlib.Path(f"results/3_anonymous.csv")
+        results_file = pathlib.Path(f"task1_primal/results/3_anonymous.csv")
 
     # set up the results CSV file
     results_file.parent.mkdir(parents=True, exist_ok=True)
@@ -36,17 +36,13 @@ if __name__ == '__main__':
         writer = csv.DictWriter(csv_file, fieldnames=results_fieldnames)
         writer.writeheader()
 
-    # trick to tweak the primal integral computation for each instance (initial primal bound)
-    primal_integral_config = {}
-    def primal_bound_offset_and_limit(model):
-        return primal_integral_config["offset"], primal_integral_config["limit"]
-
     # set to True to print debug information
     debug = False
 
     # environment
     time_limit = 10  # 5*60
-    primal_integral = ec.reward.PrimalIntegral(wall=True, bound_function=primal_bound_offset_and_limit)
+    primal_integral_config = {}  # trick to tweak the primal integral computation for each instance (initial primal bound)
+    primal_integral = ec.reward.PrimalIntegral(wall=True, bound_function=lambda model: (primal_integral_config["offset"], primal_integral_config["limit"]))
 
     env = environment.RootPrimalSearch(
         time_limit=time_limit,
