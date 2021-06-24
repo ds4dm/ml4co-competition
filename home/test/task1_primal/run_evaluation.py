@@ -17,6 +17,11 @@ if __name__ == '__main__':
         help='Problem benchmark to process.',
         choices=['item_placement', 'load_balancing', 'anonymous'],
     )
+    parser.add_argument(
+        '-d', '--debug',
+        help='Print debug traces.',
+        action='store_true',
+    )
     args = parser.parse_args()
 
     if args.problem == 'item_placement':
@@ -35,9 +40,6 @@ if __name__ == '__main__':
     with open(results_file, mode='w') as csv_file:
         writer = csv.DictWriter(csv_file, fieldnames=results_fieldnames)
         writer.writeheader()
-
-    # set to True to print debug information
-    debug = False
 
     # environment
     time_limit = 10  # 5*60
@@ -79,7 +81,7 @@ if __name__ == '__main__':
         # reset the policy and the environment
         policy.reset()
         observation, action_set, reward, done, info = env.reset(str(instance))
-        if debug:
+        if args.debug:
             print(f"  info: {info}")
             print(f"  reward: {reward}")
             print(f"  action_set: {action_set}")
@@ -90,7 +92,7 @@ if __name__ == '__main__':
         while not done:
             action = policy(action_set, observation)
             observation, action_set, reward, done, info = env.step(action)
-            if debug:
+            if args.debug:
                 print(f"  action: {action}")
                 print(f"  info: {info}")
                 print(f"  reward: {reward}")

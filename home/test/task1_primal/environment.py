@@ -13,7 +13,8 @@ class DefaultInformationFunction():
                 'dual_bound': m.getDualbound(),
                 'nlpiters': m.getNLPIterations(),
                 'nnodes': m.getNNodes(),
-                'solvingtime': m.getSolvingTime()}
+                'solvingtime': m.getSolvingTime(),
+                'status': m.getStatus()}
 
 
 class TimeLimitPrimalIntegral(ecole.reward.PrimalIntegral):
