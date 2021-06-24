@@ -74,6 +74,7 @@ if __name__ == '__main__':
         print(f"Instance {instance}")
         print(f"  seed: {seed}")
         print(f"  initial primal bound: {initial_primal_bound}")
+        print(f"  primal bound offset: {primal_bound_offset}")
 
         # reset the policy and the environment
         policy.reset()
