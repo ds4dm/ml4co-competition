@@ -18,6 +18,12 @@ if __name__ == '__main__':
         choices=['item_placement', 'load_balancing', 'anonymous'],
     )
     parser.add_argument(
+        '-t', '--timelimit',
+        help='Episode time limit (in seconds).',
+        default=5*60,
+        type=float,
+    )
+    parser.add_argument(
         '-d', '--debug',
         help='Print debug traces.',
         action='store_true',
@@ -42,12 +48,11 @@ if __name__ == '__main__':
         writer.writeheader()
 
     # environment
-    time_limit = 10  # 5*60
     primal_bound_offset = None  # instance-specific
     initial_primal_bound = None  # instance-specific
 
     env = environment.RootPrimalSearch(
-        time_limit=time_limit,
+        time_limit=args.timelimit,
         observation_function=agent.ObservationFunction(problem=args.problem),
         reward_function=-environment.TimeLimitPrimalIntegral(  # minimize the primal integral <=> negated reward
             offset=lambda: primal_bound_offset,  # trick to set this value dynamically for each instance
