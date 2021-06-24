@@ -80,7 +80,7 @@ if __name__ == '__main__':
 
         # reset the policy and the environment
         policy.reset()
-        observation, action_set, reward, done, info = env.reset(str(instance))
+        observation, action_set, reward, done, info = env.reset(str(instance), objective_limit=initial_primal_bound)
         if args.debug:
             print(f"  info: {info}")
             print(f"  reward: {reward}")
