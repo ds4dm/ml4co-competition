@@ -49,7 +49,7 @@ class TimeLimitDualIntegral(ecole.reward.DualIntegral):
         super().__init__(wall=True, bound_function=lambda model: (self.offset, self.initial_dual_bound))
 
     def before_reset(self, model):
-        # trick to allow the primal bound initial value and offset to be set dynamically
+        # trick to allow the dual bound initial value and offset to be set dynamically
         self.offset = self._offset() if callable(self._offset) else self._offset
         self.initial_dual_bound = self._initial_dual_bound() if callable(self._initial_dual_bound) else self._initial_dual_bound
 
@@ -58,7 +58,7 @@ class TimeLimitDualIntegral(ecole.reward.DualIntegral):
             self.offset = 0.0
 
         if self.initial_dual_bound is None:
-            self.initial_dual_bound = model.as_pyscipopt().getObjlimit()
+            self.initial_dual_bound = -m.infinity() if m.getObjectiveSense() == "minimize" else m.infinity()
 
         super().before_reset(model)
 
