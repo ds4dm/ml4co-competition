@@ -30,15 +30,16 @@ if __name__ == '__main__':
     )
     args = parser.parse_args()
 
+    # collect instance files
     if args.problem == 'item_placement':
         instance_files = pathlib.Path.cwd().glob('instances/1_item_placement/test/*.mps.gz')
-        results_file = pathlib.Path(f"task3_config/results/1_item_placement.csv")
+        results_file = pathlib.Path(f"results/3_config/1_item_placement.csv")
     elif args.problem == 'load_balancing':
         instance_files = pathlib.Path.cwd().glob('instances/2_load_balancing/test/*.mps.gz')
-        results_file = pathlib.Path(f"task3_config/results/2_load_balancing.csv")
+        results_file = pathlib.Path(f"results/3_config/2_load_balancing.csv")
     elif args.problem == 'anonymous':
         instance_files = pathlib.Path.cwd().glob('instances/3_anonymous/test/*.mps.gz')
-        results_file = pathlib.Path(f"task3_config/results/3_anonymous.csv")
+        results_file = pathlib.Path(f"results/3_config/3_anonymous.csv")
 
     # set up the results CSV file
     results_file.parent.mkdir(parents=True, exist_ok=True)

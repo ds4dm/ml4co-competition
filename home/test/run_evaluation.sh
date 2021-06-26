@@ -15,13 +15,13 @@ conda activate ml4co
 
 case $1 in
 	primal)
-		python task1_primal/run_evaluation.py ${@:2}
+		python tasks/1_primal/run_evaluation.py ${@:2}
 		;;
 	dual)
-		python task2_dual/run_evaluation.py ${@:2}
+		python tasks/2_dual/run_evaluation.py ${@:2}
 		;;
 	config)
-		python task3_config/run_evaluation.py ${@:2}
+		python tasks/3_config/run_evaluation.py ${@:2}
 		;;
 	*)
 		display_usage
