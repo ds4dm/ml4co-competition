@@ -1,5 +1,5 @@
 # Machine Learning for Combinatorial Optimization
-## NeurIPS 2021 Competition
+## [NeurIPS 2021 Competition](https://www.ecole.ai/2021/ml4co-competition/)
 
 This repository contains the evaluation scripts that we will use to evaluate the competitors, as well as some baseline implementations for each of the three tasks of the competition (primal, dual, config).
 
@@ -7,7 +7,7 @@ Note that we employ a singularity container to evaluate the code of each team, a
 
 We encourage participants to test their code within a singularity container using the provided pipeline before they make a submission, so that they can detect and fix potential problem in advance.
 
-# Benchmark files
+## Benchmark files
 
 In addition to the scripts in this repository, participants will find the training and validation instances for each problem benchmark [here](https://drive.google.com/file/d/1MytdY3IwX_aFRWdoc0mMfDN9Xg1EKUuq/view?usp=sharing). The test instances, which sill be used to evaluate the participants, will not be made public before the end of the competition.
 
