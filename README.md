@@ -1,17 +1,21 @@
 # Machine Learning for Combinatorial Optimization
 ## NeurIPS 2021 Competition
 
-This repository contains the evaluation scripts which will be used to evaluate the competitors, as well as some baseline implementations for each of the three tasks of the competition (primal, dual, config). We employ a singularity container to evaluate the code of each team, as well as conda and pip to manage the software dependencies of each team.
+This repository contains the evaluation scripts that we will use to evaluate the competitors, as well as some baseline implementations for each of the three tasks of the competition (primal, dual, config).
 
-For development purposes or to train your ML models, you do not have to use the singularity container. However, the use of conda and/or pip is strongly encouraged to make the installation process easier on our side.
+Note that we employ a singularity container to evaluate the code of each team, as well as conda and pip to manage the software dependencies of each team. For development purposes or to train your ML models, you do not have to use the singularity container. However, the use of conda and/or pip is strongly encouraged to make the installation process easier on our side.
 
-Still, we encourage participants to test their code within our singularity pipeline before they make a submission, so that they can detect and fix potential problem in advance.
+We encourage participants to test their code within a singularity container using the provided pipeline before they make a submission, so that they can detect and fix potential problem in advance.
 
-In addition to the scripts in this repository, participants can download the training and validation instances for each problem benchmark [here]().Note that for each benchmark we provide a pre-defined split of the benchmarks into a training and a validation set, however we do not impose any restriction on how the instances are used. All the provided instances can be considered traiing instances.
+# Benchmark files
+
+In addition to the scripts in this repository, participants will find the training and validation instances for each problem benchmark [here](). The test instances, which sill be used to evaluate the participants, will not be made public before the end of the competition.
+
+Note that for each benchmark we provide a pre-defined split of the instance files into a training and a validation set, however we do not impose any restriction on how those instances are used. All the provided instances can be considered training instances.
 
 ## Submissions
 
-The main idea is that we will keep a separate `home/TEAM` folder for each team, where we will place their submissions. A team submission then consists in a single folder with the following structure:
+The main idea of our evaluation pipeline is that we will keep a separate `home/TEAM` folder for each team, where we will place their submission. A team submission then consists in a single folder with the following structure:
  - `conda.yaml` the file that specifies the conda and pip packages to be installed
  - `init.sh` (optional) the initialization script, with additional installation commands if needed
  - `tasks/agents/primal.py` the code of the team's agent for the primal task, if they want to compete in the primal task
@@ -21,14 +25,14 @@ The main idea is that we will keep a separate `home/TEAM` folder for each team, 
 
 A minimal example of such files can be found in the `home/naive_baseline` folder.
 
-## Evaluation pipeline without singularity
+## Evaluation pipeline, without singularity
 
 Additional Python files are required to evaluate a submission, which can also be fond in the `home/naive_baseline` folder:
  - `tasks/environments.py` definition of the POMDP environments for each task
  - `tasks/rewards.py` definition of the reward functions for each task
  - `tasks/evaluate.py` evaluation script
 
-The evaluation instances for the three problem benchmarks must be accessible through the `home/TEAM/instances` folder (either by directly placing them here, or by using a synlink). Then, the evaluation for each task and each problem benchmark can be run as follows:
+The evaluation instances for the three problem benchmarks must be accessible within the `home/TEAM/instances` folder (either by directly placing the files there, or by using a symlink). Then, the evaluation for each task and each problem benchmark can be run as follows:
 ```
 cd home/TEAM
 
@@ -60,7 +64,7 @@ home/TEAM/results/config/2_load_balancing.csv
 home/TEAM/results/config/3_anonymous.csv
 ```
 
-## Evaluation pipeline with singularity
+## Evaluation pipeline, with singularity
 
 To evaluate their subnission within singularity, participants can place their code within a `home/TEAM` folder, place the instances files within an `instances` folder, and then go through the following steps.
 
