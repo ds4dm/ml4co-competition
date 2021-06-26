@@ -9,7 +9,7 @@ We encourage participants to test their code within a singularity container usin
 
 ## Benchmark files
 
-In addition to the scripts in this repository, participants will find the training and validation instances for each problem benchmark [here](https://drive.google.com/file/d/1MytdY3IwX_aFRWdoc0mMfDN9Xg1EKUuq/view?usp=sharing). The test instances, which sill be used to evaluate the participants, will not be made public before the end of the competition.
+Participants will find the training and validation instances for each problem benchmark [here](https://drive.google.com/file/d/1MytdY3IwX_aFRWdoc0mMfDN9Xg1EKUuq/view?usp=sharing). The test instances, which sill be used to evaluate the participants, will not be made public before the end of the competition.
 
 Note that for each benchmark we provide a pre-defined split of the instance files into a training and a validation set, however we do not impose any restriction on how those instances are used. All the provided instances can be considered training instances.
 
