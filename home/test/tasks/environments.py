@@ -40,51 +40,58 @@ class DefaultInformationFunction():
                 'status': status}
 
 
-class TimeLimitPrimalDualIntegral(ecole.reward.PrimalDualIntegral):
+class RootPrimalSearchDynamics(ecole.dynamics.PrimalSearchDynamics):
 
-    def __init__(self, initial_primal_bound=None, initial_dual_bound=None):
-        self._initial_primal_bound = initial_primal_bound
-        self._initial_dual_bound = initial_dual_bound
+    def __init__(self, time_limit, n_trials=-1):
+        super().__init__(trials_per_node=n_trials, depth_freq=1, depth_start=0, depth_stop=0)  # only at the root node
+        self.time_limit = time_limit
 
-        super().__init__(wall=True, bound_function=lambda model: (self.initial_primal_bound, self.initial_dual_bound))
+    def reset_dynamics(self, model):
+        pyscipopt_model = model.as_pyscipopt()
 
-    def before_reset(self, model):
-        # trick to allow the primal and dual bound initial values to be set dynamically
-        self.initial_primal_bound = self._initial_primal_bound() if callable(self._initial_primal_bound) else self._initial_primal_bound
-        self.initial_dual_bound = self._initial_dual_bound() if callable(self._initial_dual_bound) else self._initial_dual_bound
+        # disable SCIP default heuristics
+        pyscipopt_model.setHeuristics(pyscipopt.scip.PY_SCIP_PARAMSETTING.OFF)
 
-        # default values if none was provided
-        if self.initial_primal_bound is None:
-            self.initial_primal_bound = model.as_pyscipopt().getObjlimit()
+        # disable restarts
+        model.set_params({
+            'estimation/restarts/restartpolicy': 'n',
+        })
 
-        if self.initial_dual_bound is None:
-            m = model.as_pyscipopt()
-            self.initial_dual_bound = -m.infinity() if m.getObjectiveSense() == "minimize" else m.infinity()
+        # process the root node
+        done, action_set = super().reset_dynamics(model)
 
-        super().before_reset(model)
+        # set time limit after reset
+        reset_time = pyscipopt_model.getSolvingTime()
+        pyscipopt_model.setParam("limits/time", self.time_limit + reset_time)
 
-    def extract(self, model, done):
-        reward = super().extract(model, done)
+        return done, action_set
 
-        # adjust the final reward if the time limit has not been reached
-        if done:
-            m = model.as_pyscipopt()
-            # keep integrating over the time left
-            time_left = max(m.getParam("limits/time") - m.getSolvingTime(), 0)
-            if m.getStage() < pyscipopt.scip.PY_SCIP_STAGE.TRANSFORMED:
-                primal_bound = m.getObjlimit()
-                dual_bound = -m.infinity() if m.getObjectiveSense() == "minimize" else m.infinity()
-            else:
-                primal_bound = m.getPrimalbound()
-                dual_bound = m.getDualbound()
 
-            # account for maximization problems
-            if m.getObjectiveSense() == "minimize":
-                reward += (min(primal_bound, self.initial_primal_bound) - max(dual_bound, self.initial_dual_bound)) * time_left
-            else:
-                reward += -(max(primal_bound, self.initial_primal_bound) - min(dual_bound, self.initial_dual_bound)) * time_left
+class BranchingDynamics(ecole.dynamics.BranchingDynamics):
 
-        return reward
+    def __init__(self, time_limit):
+        super().__init__()
+        self.time_limit = time_limit
+
+    def reset_dynamics(self, model):
+        pyscipopt_model = model.as_pyscipopt()
+
+        # disable SCIP heuristics
+        pyscipopt_model.setHeuristics(pyscipopt.scip.PY_SCIP_PARAMSETTING.OFF)
+
+        # disable restarts
+        model.set_params({
+            'estimation/restarts/restartpolicy': 'n',
+        })
+
+        # process the root node
+        done, action_set = super().reset_dynamics(model)
+
+        # set time limit after reset
+        reset_time = pyscipopt_model.getSolvingTime()
+        pyscipopt_model.setParam("limits/time", self.time_limit + reset_time)
+
+        return done, action_set
 
 
 class ConfiguringDynamics(ecole.dynamics.ConfiguringDynamics):
@@ -112,9 +119,7 @@ class ConfiguringDynamics(ecole.dynamics.ConfiguringDynamics):
         return done, action_set
 
 
-class Configuring(ecole.environment.Environment):
-    __Dynamics__ = ConfiguringDynamics
-    __DefaultInformationFunction__ = DefaultInformationFunction
+class ObjectiveLimitEnvironment(ecole.environment.Environment):
 
     def reset(self, instance, objective_limit=None, *dynamics_args, **dynamics_kwargs):
         """We add one optional parameter not supported by Ecole yet: the instance's objective limit."""
@@ -147,4 +152,17 @@ class Configuring(ecole.environment.Environment):
         except Exception as e:
             self.can_transition = False
             raise e
+
+
+class RootPrimalSearch(ObjectiveLimitEnvironment):
+    __Dynamics__ = RootPrimalSearchDynamics
+    __DefaultInformationFunction__ = DefaultInformationFunction
+
+class Branching(ObjectiveLimitEnvironment):
+    __Dynamics__ = BranchingDynamics
+    __DefaultInformationFunction__ = DefaultInformationFunction
+
+class Configuring(ObjectiveLimitEnvironment):
+    __Dynamics__ = ConfiguringDynamics
+    __DefaultInformationFunction__ = DefaultInformationFunction
 

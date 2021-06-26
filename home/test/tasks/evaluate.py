@@ -6,12 +6,14 @@ import pathlib
 import ecole as ec
 import numpy as np
 
-import environment
-import agent
-
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
+    parser.add_argument(
+        'task',
+        help='Task to evaluate.',
+        choices=['primal', 'dual', 'config'],
+    )
     parser.add_argument(
         'problem',
         help='Problem benchmark to process.',
@@ -28,41 +30,70 @@ if __name__ == '__main__':
         help='Print debug traces.',
         action='store_true',
     )
+    parser.add_argument(
+        '-f', '--folder',
+        help='Instance folder to evaluate.',
+        default="valid",
+        type=str,
+        choices=("valid", "test"),
+    )
     args = parser.parse_args()
 
-    # collect instance files
+    print(f"Evaluating the {args.task} agent on the {args.folder} instances of the {args.problem} problem benchmark.")
+
+    # collect the instance files
     if args.problem == 'item_placement':
-        instance_files = pathlib.Path.cwd().glob('instances/1_item_placement/test/*.mps.gz')
+        instance_files = pathlib.Path.cwd().glob(f'instances/1_item_placement/{args.folder}/*.mps.gz')
         results_file = pathlib.Path(f"results/1_primal/1_item_placement.csv")
     elif args.problem == 'load_balancing':
-        instance_files = pathlib.Path.cwd().glob('instances/2_load_balancing/test/*.mps.gz')
+        instance_files = pathlib.Path.cwd().glob('instances/2_load_balancing/{args.folder}/*.mps.gz')
         results_file = pathlib.Path(f"results/1_primal/2_load_balancing.csv")
     elif args.problem == 'anonymous':
-        instance_files = pathlib.Path.cwd().glob('instances/3_anonymous/test/*.mps.gz')
+        instance_files = pathlib.Path.cwd().glob('instances/3_anonymous/{args.folder}/*.mps.gz')
         results_file = pathlib.Path(f"results/1_primal/3_anonymous.csv")
 
     # set up the results CSV file
     results_file.parent.mkdir(parents=True, exist_ok=True)
-    results_fieldnames = ['instance', 'seed', 'primal_bound_offset', 'initial_primal_bound', 'primal_integral']
+    results_fieldnames = ['instance', 'seed', 'initial_primal_bound', 'initial_dual_bound', 'objective_offset', 'cumulated_reward']
     with open(results_file, mode='w') as csv_file:
         writer = csv.DictWriter(csv_file, fieldnames=results_fieldnames)
         writer.writeheader()
 
-    # environment
-    primal_bound_offset = None  # instance-specific
-    initial_primal_bound = None  # instance-specific
+    # set up the proper agent, environment and goal for the task
+    if args.task == "primal":
+        from agents.primal import Policy, ObservationFunction
+        from environments import RootPrimalSearch as Environment
+        from rewards import TimeLimitPrimalIntegral as TimeIntegral
 
-    env = environment.RootPrimalSearch(
-        time_limit=args.timelimit,
-        observation_function=agent.ObservationFunction(problem=args.problem),
-        reward_function=-environment.TimeLimitPrimalIntegral(  # minimize the primal integral <=> negated reward
-            offset=lambda: primal_bound_offset,  # trick to set this value dynamically for each instance
-            initial_primal_bound=lambda: initial_primal_bound,  # trick to set this value dynamically for each instance
-        ),
+    elif args.task == "dual":
+        from agents.dual import Policy, ObservationFunction
+        from environments import Branching as Environment
+        from rewards import TimeLimitDualIntegral as TimeIntegral
+
+    elif args.task == "config":
+        from agents.config import Policy, ObservationFunction
+        from environments import Configuring as Environment
+        from rewards import TimeLimitPrimalDualIntegral as TimeIntegral
+
+    policy = Policy(problem=args.problem)
+    observation_function = ObservationFunction(problem=args.problem)
+
+    # parameters for computing the integral, will be set dynamically for each instance
+    initial_primal_bound = None
+    initial_dual_bound = None
+    objective_offset = None
+
+    integral_function = TimeIntegral(
+        objective_offset=lambda: objective_offset,
+        initial_primal_bound=lambda: initial_primal_bound,
+        initial_dual_bound=lambda: initial_dual_bound,
     )
 
-    # agent
-    policy = agent.Policy(problem=args.problem)
+    env = Environment(
+        time_limit=args.timelimit,
+        observation_function=observation_function,
+        reward_function=-integral_function,  # negated integral (minimization)
+    )
 
     # evaluation loop
     for seed, instance in enumerate(instance_files):
@@ -75,18 +106,21 @@ if __name__ == '__main__':
         with open(instance.with_name(instance.stem).with_suffix('.json')) as f:
             instance_info = json.load(f)
 
-        # set up the primal integral computation for that instance (primal bound initial value and offset)
+        # set up the reward function parameters for that instance
         initial_primal_bound = instance_info["primal_bound"]
-        primal_bound_offset = 0
+        initial_dual_bound = instance_info["dual_bound"]
+        objective_offset = 0
 
         print(f"Instance {instance}")
         print(f"  seed: {seed}")
         print(f"  initial primal bound: {initial_primal_bound}")
-        print(f"  primal bound offset: {primal_bound_offset}")
+        print(f"  initial dual bound: {initial_dual_bound}")
+        print(f"  objective offset: {objective_offset}")
 
         # reset the policy and the environment
         policy.reset()
         observation, action_set, reward, done, info = env.reset(str(instance), objective_limit=initial_primal_bound)
+
         if args.debug:
             print(f"  info: {info}")
             print(f"  reward: {reward}")
@@ -98,6 +132,7 @@ if __name__ == '__main__':
         while not done:
             action = policy(action_set, observation)
             observation, action_set, reward, done, info = env.step(action)
+
             if args.debug:
                 print(f"  action: {action}")
                 print(f"  info: {info}")
@@ -106,7 +141,7 @@ if __name__ == '__main__':
 
             cumulated_reward += reward
 
-        print(f"  primal integral (to be minimized): {-cumulated_reward}")
+        print(f"  cumulated reward (to be maximized): {cumulated_reward}")
 
         # save instance results
         with open(results_file, mode='a') as csv_file:
@@ -114,7 +149,8 @@ if __name__ == '__main__':
             writer.writerow({
                 'instance': str(instance),
                 'seed': seed,
-                'primal_bound_offset': primal_bound_offset,
                 'initial_primal_bound': initial_primal_bound,
-                'primal_integral': -cumulated_reward,
+                'initial_dual_bound': initial_dual_bound,
+                'objective_offset': objective_offset,
+                'cumulated_reward': cumulated_reward,
             })
