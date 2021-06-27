@@ -49,7 +49,7 @@ class RootPrimalSearchDynamics(ecole.dynamics.PrimalSearchDynamics):
     def reset_dynamics(self, model):
         pyscipopt_model = model.as_pyscipopt()
 
-        # disable SCIP default heuristics
+        # disable SCIP heuristics
         pyscipopt_model.setHeuristics(pyscipopt.scip.PY_SCIP_PARAMSETTING.OFF)
 
         # disable restarts
@@ -101,18 +101,29 @@ class ConfiguringDynamics(ecole.dynamics.ConfiguringDynamics):
         self.time_limit = time_limit
 
     def reset_dynamics(self, model):
-        m = model.as_pyscipopt()
+        pyscipopt_model = model.as_pyscipopt()
 
-        # set the time limit
-        m.setParam("limits/time", self.time_limit)
-
+        # process the root node
         done, action_set = super().reset_dynamics(model)
+
+        # set time limit after reset
+        reset_time = pyscipopt_model.getSolvingTime()
+        pyscipopt_model.setParam("limits/time", self.time_limit + reset_time)
 
         return done, action_set
 
     def step_dynamics(self, model, action):
-        if "limits/time" in action:
-            raise ValueError("Setting the SCIP parameter 'limits/time' is forbidden.")
+        forbidden_params = [
+            "limits/time",
+            "timing/clocktype",
+            "timing/enabled",
+            "timing/reading",
+            "timing/rareclockcheck",
+            "timing/statistictiming"]
+
+        for param in forbidden_params:
+            if param in action:
+                raise ValueError(f"Setting the SCIP parameter '{param}' is forbidden.")
 
         done, action_set = super().step_dynamics(model, action)
 
@@ -138,20 +149,37 @@ class ObjectiveLimitEnvironment(ecole.environment.Environment):
 
             self.dynamics.set_dynamics_random_state(self.model, self.random_engine)
 
-            self.observation_function.before_reset(self.model)
             self.reward_function.before_reset(self.model)
+            self.observation_function.before_reset(self.model)
             self.information_function.before_reset(self.model)
             done, action_set = self.dynamics.reset_dynamics(
                 self.model, *dynamics_args, **dynamics_kwargs
             )
 
-            observation = self.observation_function.extract(self.model, done)
             reward_offset = self.reward_function.extract(self.model, done)
+            observation = self.observation_function.extract(self.model, done)
             information = self.information_function.extract(self.model, done)
             return observation, action_set, reward_offset, done, information
         except Exception as e:
             self.can_transition = False
             raise e
+
+    def step(self, action, *dynamics_args, **dynamics_kwargs):
+        if not self.can_transition:
+            raise ecole.core.environment.Exception("Environment need to be reset.")
+
+        try:
+            done, action_set = self.dynamics.step_dynamics(
+                self.model, action, *dynamics_args, **dynamics_kwargs
+            )
+            reward = self.reward_function.extract(self.model, done)
+            observation = self.observation_function.extract(self.model, done)
+            information = self.information_function.extract(self.model, done)
+            return observation, action_set, reward, done, information
+        except Exception as e:
+            self.can_transition = False
+            raise e
+
 
 
 class RootPrimalSearch(ObjectiveLimitEnvironment):
