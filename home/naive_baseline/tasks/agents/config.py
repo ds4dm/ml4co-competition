@@ -6,16 +6,22 @@ class ObservationFunction():
 
     def __init__(self, problem):
         self.problem = problem  # to devise problem-specific observations
-        self.milp_bipartite = ec.observation.MilpBipartite()
 
     def before_reset(self, model):
-        self.milp_bipartite.before_reset(model)
+        pass
 
     def extract(self, model, done):
         if done:
             return None
 
-        observation = self.milp_bipartite.extract(model, done)
+        m = model.as_pyscipopt()
+
+        nvars = m.getNVars()
+        nconss = m.getNConss()
+        nintvars = m.getNIntVars()
+        nbinvars = m.getNBinVars()
+
+        observation = (nvars, nconss, nintvars, nbinvars)
 
         return observation
 
@@ -34,7 +40,7 @@ class Policy():
         pass
 
     def __call__(self, action_set, observation):
-        milp_bipartite = observation 
+        nvars, nconss, nintvars, nbinvars = observation
 
         scip_params = {}  # default SCIP parameters
 
