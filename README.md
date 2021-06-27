@@ -9,44 +9,56 @@ We encourage participants to test their code within a singularity container usin
 
 ## Benchmark files
 
-Participants will find the training and validation instances for each problem benchmark [here](https://drive.google.com/file/d/1MytdY3IwX_aFRWdoc0mMfDN9Xg1EKUuq/view?usp=sharing). The test instances, which sill be used to evaluate the participants, will not be made public before the end of the competition.
+Participants will find the training and validation instances for
+each problem benchmark [here](https://drive.google.com/file/d/1MytdY3IwX_aFRWdoc0mMfDN9Xg1EKUuq/view?usp=sharing).
+The `instance` folder is to be placed at the root of this repository.
 
-Note that for each benchmark we provide a pre-defined split of the instance files into a training and a validation set, however we do not impose any restriction on how those instances are used. All the provided instances can be considered training instances.
+Note that for each benchmark we provide a pre-defined split of the
+instance files into a training (train) and a validation set (valid),
+however we do not impose any restriction on how those instances are used.
+All the provided instances can be considered training instances.
+
+The test instances, which will be used to evaluate the participants,
+will not be made public before the end of the competition.
 
 ## Submissions
 
 The main idea of our evaluation pipeline is that we will keep a separate `home/TEAM` folder for each team, where we will place their submission. A team submission then consists in a single folder with the following structure:
  - `conda.yaml` the file that specifies the conda and pip packages to be installed
  - `init.sh` (optional) the initialization script, with additional installation commands if needed
- - `tasks/agents/primal.py` the code of the team's agent for the primal task, if they want to compete in the primal task
- - `tasks/agents/dual.py` the code of the team's agent for the dual task, if they want to compete in the dual task
- - `tasks/agents/config.py` the code of the team's agent for the config task, if they want to compete in the config task
- - `tasks/agents/XXX` any other necessary file (for exaqmple, an ML model and its parameters)
+ - `agents/primal.py` the code of the team's agent for the primal task, if they want to compete in the primal task
+ - `agents/dual.py` the code of the team's agent for the dual task, if they want to compete in the dual task
+ - `agents/config.py` the code of the team's agent for the config task, if they want to compete in the config task
+ - `XXX` any other necessary file (for example, an ML model and its parameters)
 
 A minimal example of such files can be found in the `home/naive_baseline` folder.
 
 ## Evaluation pipeline, without singularity
 
-Additional Python files are required to evaluate a submission, which can also be fond in the `home/naive_baseline` folder:
- - `tasks/environments.py` definition of the POMDP environments for each task
- - `tasks/rewards.py` definition of the reward functions for each task
- - `tasks/evaluate.py` evaluation script
+The Python scripts required to evaluate a submission, which are common to every
+participant, can be found in the `common` folder:
+ - `common/environments.py` definition of the POMDP environments for each task
+ - `common/rewards.py` definition of the reward functions for each task
+ - `common/evaluate.py` evaluation script
 
-The evaluation instances for the three problem benchmarks must be accessible within the `home/TEAM/instances` folder (either by directly placing the files there, or by using a symlink). Then, the evaluation for each task and each problem benchmark can be run as follows:
+The evaluation instances for the three problem benchmarks must be accessible within
+the `instances` folder at the root of this repository.
+
+The evaluation for each task and each problem benchmark can be run as follows:
 ```
 cd home/TEAM
 
-python tasks/evaluate.py primal item_placement
-python tasks/evaluate.py primal load_balancing
-python tasks/evaluate.py primal anonymous
+python ../../common/evaluate.py primal item_placement
+python ../../common/evaluate.py primal load_balancing
+python ../../common/evaluate.py primal anonymous
 
-python tasks/evaluate.py dual item_placement
-python tasks/evaluate.py dual load_balancing
-python tasks/evaluate.py dual anonymous
+python ../../common/evaluate.py dual item_placement
+python ../../common/evaluate.py dual load_balancing
+python ../../common/evaluate.py dual anonymous
 
-python tasks/evaluate.py config item_placement
-python tasks/evaluate.py config load_balancing
-python tasks/evaluate.py config anonymous
+python ../../common/evaluate.py config item_placement
+python ../../common/evaluate.py config load_balancing
+python ../../common/evaluate.py config anonymous
 ```
 
 Those scripts will output results in the following files:
@@ -66,12 +78,7 @@ home/TEAM/results/config/3_anonymous.csv
 
 ## Evaluation pipeline, with singularity
 
-To evaluate their subnission within singularity, participants can place their code within a `home/TEAM` folder, place the instances files within an `instances` folder, and then go through the following steps.
-
-Note: ideally you can place the instances in a single location, and use a synlink as follows:
-```bash
-ln -s /path/to/instances instances
-```
+To evaluate their submission within singularity, participants must place their code and files within a `home/TEAM` folder, and then go through the following steps.
 
 ### Singularity set-up (only once)
 

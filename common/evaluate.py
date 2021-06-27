@@ -39,25 +39,31 @@ if __name__ == '__main__':
     )
     args = parser.parse_args()
 
-    print(f"Evaluating the {args.task} agent on the {args.folder} instances of the {args.problem} problem benchmark.")
+    print(f"Evaluating the {args.task} task agent.")
 
     # collect the instance files
     if args.problem == 'item_placement':
-        instance_files = pathlib.Path.cwd().glob(f'instances/1_item_placement/{args.folder}/*.mps.gz')
+        instances_path = pathlib.Path(f"../../instances/1_item_placement/{args.folder}/")
         results_file = pathlib.Path(f"results/{args.task}/1_item_placement.csv")
     elif args.problem == 'load_balancing':
-        instance_files = pathlib.Path.cwd().glob(f'instances/2_load_balancing/{args.folder}/*.mps.gz')
+        instances_path = pathlib.Path(f"../../instances/2_load_balancing/{args.folder}/")
         results_file = pathlib.Path(f"results/{args.task}/2_load_balancing.csv")
     elif args.problem == 'anonymous':
-        instance_files = pathlib.Path.cwd().glob(f'instances/3_anonymous/{args.folder}/*.mps.gz')
+        instances_path = pathlib.Path("../../instances/3_anonymous/{args.folder}/")
         results_file = pathlib.Path(f"results/{args.task}/3_anonymous.csv")
 
-    # set up the results CSV file
+    print(f"Processing instances from {instances_path.resolve()}")
+    instance_files = list(instances_path.glob('*.mps.gz'))
+
+    print(f"Saving results to {results_file.resolve()}")
     results_file.parent.mkdir(parents=True, exist_ok=True)
     results_fieldnames = ['instance', 'seed', 'initial_primal_bound', 'initial_dual_bound', 'objective_offset', 'cumulated_reward']
     with open(results_file, mode='w') as csv_file:
         writer = csv.DictWriter(csv_file, fieldnames=results_fieldnames)
         writer.writeheader()
+
+    import sys
+    sys.path.insert(1, str(pathlib.Path.cwd()))
 
     # set up the proper agent, environment and goal for the task
     if args.task == "primal":
@@ -113,7 +119,8 @@ if __name__ == '__main__':
                 initial_dual_bound=initial_dual_bound,
                 objective_offset=objective_offset)
 
-        print(f"Instance {instance}")
+        print()
+        print(f"Instance {instance.name}")
         print(f"  seed: {seed}")
         print(f"  initial primal bound: {initial_primal_bound}")
         print(f"  initial dual bound: {initial_dual_bound}")

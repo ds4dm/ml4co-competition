@@ -1,7 +1,7 @@
 #!/bin/bash
 
 display_usage() {
-	echo -e "Usage: $0 team"
+	echo -e "Usage: $0 TEAM"
 }
 
 # if less than one arguments supplied, display usage
