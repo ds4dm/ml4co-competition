@@ -28,14 +28,17 @@ class IntegralParameters():
 
 class TimeLimitPrimalIntegral(ecole.reward.PrimalIntegral):
 
-    def __init__(self, objective_offset=None, initial_primal_bound=None, initial_dual_bound=None):
+    def __init__(self):
+        self.parameters = IntegralParameters()
+        super().__init__(wall=True, bound_function=lambda model: (
+            self.parameters.offset,
+            self.parameters.initial_primal_bound))
+
+    def set_parameters(self, objective_offset=None, initial_primal_bound=None, initial_dual_bound=None):
         self.parameters = IntegralParameters(
             offset=objective_offset,
             initial_primal_bound=initial_primal_bound,
             initial_dual_bound=initial_dual_bound)
-        super().__init__(wall=True, bound_function=lambda model: (
-            self.parameters.offset,
-            self.parameters.initial_primal_bound))
 
     def before_reset(self, model):
         self.parameters.fetch_values(model)
@@ -68,14 +71,17 @@ class TimeLimitPrimalIntegral(ecole.reward.PrimalIntegral):
 
 class TimeLimitDualIntegral(ecole.reward.DualIntegral):
 
-    def __init__(self, objective_offset=None, initial_primal_bound=None, initial_dual_bound=None):
+    def __init__(self):
+        self.parameters = IntegralParameters()
+        super().__init__(wall=True, bound_function=lambda model: (
+            self.parameters.offset,
+            self.parameters.initial_dual_bound))
+
+    def set_parameters(self, objective_offset=None, initial_primal_bound=None, initial_dual_bound=None):
         self.parameters = IntegralParameters(
             offset=objective_offset,
             initial_primal_bound=initial_primal_bound,
             initial_dual_bound=initial_dual_bound)
-        super().__init__(wall=True, bound_function=lambda model: (
-            self.parameters.offset,
-            self.parameters.initial_dual_bound))
 
     def before_reset(self, model):
         self.parameters.fetch_values(model)
@@ -108,14 +114,17 @@ class TimeLimitDualIntegral(ecole.reward.DualIntegral):
 
 class TimeLimitPrimalDualIntegral(ecole.reward.PrimalDualIntegral):
 
-    def __init__(self, objective_offset=None, initial_primal_bound=None, initial_dual_bound=None):
+    def __init__(self):
+        self.parameters = IntegralParameters()
+        super().__init__(wall=True, bound_function=lambda model: (
+            self.parameters.initial_primal_bound,
+            self.parameters.initial_dual_bound))
+
+    def set_parameters(self, objective_offset=None, initial_primal_bound=None, initial_dual_bound=None):
         self.parameters = IntegralParameters(
             offset=objective_offset,
             initial_primal_bound=initial_primal_bound,
             initial_dual_bound=initial_dual_bound)
-        super().__init__(wall=True, bound_function=lambda model: (
-            self.parameters.initial_primal_bound,
-            self.parameters.initial_dual_bound))
 
     def before_reset(self, model):
         self.parameters.fetch_values(model)

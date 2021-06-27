@@ -22,7 +22,7 @@ if __name__ == '__main__':
     parser.add_argument(
         '-t', '--timelimit',
         help='Episode time limit (in seconds).',
-        default=5*60,
+        default=argparse.SUPPRESS,
         type=float,
     )
     parser.add_argument(
@@ -44,13 +44,13 @@ if __name__ == '__main__':
     # collect the instance files
     if args.problem == 'item_placement':
         instance_files = pathlib.Path.cwd().glob(f'instances/1_item_placement/{args.folder}/*.mps.gz')
-        results_file = pathlib.Path(f"results/1_primal/1_item_placement.csv")
+        results_file = pathlib.Path(f"results/{args.task}/1_item_placement.csv")
     elif args.problem == 'load_balancing':
-        instance_files = pathlib.Path.cwd().glob('instances/2_load_balancing/{args.folder}/*.mps.gz')
-        results_file = pathlib.Path(f"results/1_primal/2_load_balancing.csv")
+        instance_files = pathlib.Path.cwd().glob(f'instances/2_load_balancing/{args.folder}/*.mps.gz')
+        results_file = pathlib.Path(f"results/{args.task}/2_load_balancing.csv")
     elif args.problem == 'anonymous':
-        instance_files = pathlib.Path.cwd().glob('instances/3_anonymous/{args.folder}/*.mps.gz')
-        results_file = pathlib.Path(f"results/1_primal/3_anonymous.csv")
+        instance_files = pathlib.Path.cwd().glob(f'instances/3_anonymous/{args.folder}/*.mps.gz')
+        results_file = pathlib.Path(f"results/{args.task}/3_anonymous.csv")
 
     # set up the results CSV file
     results_file.parent.mkdir(parents=True, exist_ok=True)
@@ -63,34 +63,31 @@ if __name__ == '__main__':
     if args.task == "primal":
         from agents.primal import Policy, ObservationFunction
         from environments import RootPrimalSearch as Environment
-        from rewards import TimeLimitPrimalIntegral as TimeIntegral
+        from rewards import TimeLimitPrimalIntegral as BoundIntegral
+        time_limit = 5*60
 
     elif args.task == "dual":
         from agents.dual import Policy, ObservationFunction
         from environments import Branching as Environment
-        from rewards import TimeLimitDualIntegral as TimeIntegral
+        from rewards import TimeLimitDualIntegral as BoundIntegral
+        time_limit = 15*60
 
     elif args.task == "config":
         from agents.config import Policy, ObservationFunction
         from environments import Configuring as Environment
-        from rewards import TimeLimitPrimalDualIntegral as TimeIntegral
+        from rewards import TimeLimitPrimalDualIntegral as BoundIntegral
+        time_limit = 15*60
+
+    # override from command-line argument if provided
+    time_limit = getattr(args, "timelimit", time_limit)
 
     policy = Policy(problem=args.problem)
     observation_function = ObservationFunction(problem=args.problem)
 
-    # parameters for computing the integral, will be set dynamically for each instance
-    initial_primal_bound = None
-    initial_dual_bound = None
-    objective_offset = None
-
-    integral_function = TimeIntegral(
-        objective_offset=lambda: objective_offset,
-        initial_primal_bound=lambda: initial_primal_bound,
-        initial_dual_bound=lambda: initial_dual_bound,
-    )
+    integral_function = BoundIntegral()
 
     env = Environment(
-        time_limit=args.timelimit,
+        time_limit=time_limit,
         observation_function=observation_function,
         reward_function=-integral_function,  # negated integral (minimization)
     )
@@ -110,6 +107,11 @@ if __name__ == '__main__':
         initial_primal_bound = instance_info["primal_bound"]
         initial_dual_bound = instance_info["dual_bound"]
         objective_offset = 0
+
+        integral_function.set_parameters(
+                initial_primal_bound=initial_primal_bound,
+                initial_dual_bound=initial_dual_bound,
+                objective_offset=objective_offset)
 
         print(f"Instance {instance}")
         print(f"  seed: {seed}")
