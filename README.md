@@ -108,10 +108,6 @@ conda activate ml4co
 python ../../common/evaluate.py dual item_placement
 python ../../common/evaluate.py dual load_balancing
 python ../../common/evaluate.py dual anonymous
-
-python ../../common/evaluate.py config item_placement
-python ../../common/evaluate.py config load_balancing
-python ../../common/evaluate.py config anonymous
 ```
 
 Config task:
