@@ -1,8 +1,8 @@
-# Machine Learning for Combinatorial Optimization
+# NeurIPS 2021 Competition - Machine Learning for Combinatorial Optimization
 
-[NeurIPS 2021 Competition](https://www.ecole.ai/2021/ml4co-competition/)
+**[Competition guidelines](https://www.ecole.ai/2021/ml4co-competition/)** - **[Ecole documentation](https://doc.ecole.ai/)** - **[SCIP documentation](https://scipopt.org/doc/html/)** - **[PySCIPOpt API](https://scipopt.github.io/PySCIPOpt/docs/html/)**
 
-This repository contains the base code that supports the competitiom, as well as
+This repository contains the base code that supports the competition, as well as
 some code examples and baseline implementations for each of the three tasks of
 the competition (primal, dual, config). The structure is as follows:
 ```
