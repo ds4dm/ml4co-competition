@@ -18,6 +18,10 @@ From: ubuntu:20.04
 	apt-get install --yes --no-install-recommends wget git openssh-client tar gzip ca-certificates
 	apt-get clean
 
+	# set up bash as the default shell
+	rm /usr/bin/sh
+	ln -s bash /usr/bin/sh
+
 	# Install Mamba (Conda alternative) through Mambaforge
 	readonly mamba_installer="Mambaforge-$(uname)-$(uname -m).sh"
 	readonly mamba_version="4.10.1-4"

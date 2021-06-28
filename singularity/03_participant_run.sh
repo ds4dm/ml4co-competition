@@ -36,4 +36,5 @@ export SINGULARITY_CONTAINALL=1
 export SINGULARITY_NV=1
 export SINGULARITY_NETWORK=none
 
-singularity exec --net singularity/base.sif bash ../../common/run_evaluation.sh ${@:2}
+COMMANDS="source /opt/mamba/init.bash; conda activate ml4co; python ../../common/evaluate.py ${@:2}"
+singularity exec --net singularity/base.sif bash -i -c "$COMMANDS"
