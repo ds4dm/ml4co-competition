@@ -6,11 +6,11 @@ This repository contains the base code that supports the competitiom, as well as
 some code examples and baseline implementations for each of the three tasks of
 the competition (primal, dual, config). The structure is as follows:
 ```
-instances/ -> the datasets
-common/ -> the common code base of the competition, i.e., the environment, reward, and evaluation scripts
-submissions/
-  example/ -> an example team submission
-singularity/ -> the singularity image and scripts of our evaluation pipeline
+instances/    -> the datasets
+common/       -> the common code base of the competition, i.e., the environment, reward, and evaluation scripts
+submissions/  -> the team submissions
+  example/    -> an example submission
+singularity/  -> the singularity image and scripts of our evaluation pipeline
 ```
 
 The competition's evaluation pipeline requires Python 3.7, as well as `conda`
