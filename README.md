@@ -53,13 +53,13 @@ consists of a single folder, i.e., `submissions/YOUR_TEAM_NAME`, which respects 
 following structure:
 ```
 submissions/TEAM/
-  conda.yaml -> the conda dependencies file, which specifies the packages to be installed (conda and/or pip)
-  init.sh -> the initialization script, where custom installation commands can be put if needed (dependencies not available on conda/pip)
+  conda.yaml     -> the conda dependencies file, which specifies the packages to be installed (conda and/or pip)
+  init.sh        -> a custom initialization script, where additional installation commands can be put if needed (dependencies not available on conda/pip)
   agents/
-    primal.py -> the code of the team's agent for the primal task, if any
-    dual.py -> the code of the team's agent for the dual task, if any
-    config.py -> the code of the team's agent for the config task, if any
-  xxx -> any other necessary file (for example, the parameters of an ML model)
+    primal.py    -> the code of the team's agent for the primal task, if any
+    dual.py      -> the code of the team's agent for the dual task, if any
+    config.py    -> the code of the team's agent for the config task, if any
+  xxx            -> any other necessary file (for example, the parameters of an ML model)
 ```
 
 To get started, copy-paste the content of the `submissions/example` folder
@@ -83,8 +83,8 @@ participant, and can be found in the `common` folder
 ```
 common/
   environments.py -> definition of the POMDP environments for each task
-  rewards.py -> definition of the reward functions for each task
-  evaluate.py -> evaluation script
+  rewards.py      -> definition of the reward functions for each task
+  evaluate.py     -> evaluation script
 ```
 
 ### 2.1. On the host
