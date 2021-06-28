@@ -36,4 +36,4 @@ export SINGULARITY_CONTAINALL=1
 export SINGULARITY_NV=1
 export SINGULARITY_NETWORK=none
 
-singularity exec --net base.sif bash ../../common/run_evaluation.sh ${@:2}
+singularity exec --net singularity/base.sif bash ../../common/run_evaluation.sh ${@:2}

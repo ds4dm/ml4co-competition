@@ -28,4 +28,4 @@ export SINGULARITY_CLEANENV=1
 export SINGULARITY_CONTAINALL=1
 export SINGULARITY_NV=1
 
-singularity run base.sif
+singularity run singularity/base.sif

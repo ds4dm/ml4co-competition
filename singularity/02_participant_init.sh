@@ -26,4 +26,4 @@ export SINGULARITY_CLEANENV=1
 export SINGULARITY_CONTAINALL=1
 export SINGULARITY_NV=1
 
-singularity exec base.sif bash init.sh
+singularity exec singularity/base.sif bash init.sh
