@@ -74,6 +74,15 @@ with open("xxx") as f:
 Our whole evaluation pipeline relies on Python 3.7, as well as `conda` + `pip`
 to manage the software dependencies of each team.
 
+The Python scripts which are used to evaluate a submission are common to every
+participant, and can be found in the `common` folder
+```
+common/
+  environments.py -> definition of the POMDP environments for each task
+  rewards.py -> definition of the reward functions for each task
+  evaluate.py -> evaluation script
+```
+
 ### 2.1. On the host
 
 #### Environment setup
@@ -84,11 +93,13 @@ cd submissions/TEAM
 sh init.sh
 ```
 
-This should install a conda environment named `ml4co` with all the required dependencies.
+This should install a conda environment named `ml4co` containing
+all the required dependencies.
 
 #### Running the evaluation
 
-The team's submission can be evaluated on the `valid` instances of each problem benchmark as follows.
+The team's submission can be evaluated on the `valid` instances of
+each problem benchmark as follows.
 
 Primal task:
 ```bash
@@ -118,15 +129,6 @@ conda activate ml4co
 python ../../common/evaluate.py config item_placement
 python ../../common/evaluate.py config load_balancing
 python ../../common/evaluate.py config anonymous
-```
-
-The Python scripts which run the evaluate a submission are common to every
-participant, and can be found in the `common` folder
-```
-common/
-  environments.py -> definition of the POMDP environments for each task
-  rewards.py -> definition of the reward functions for each task
-  evaluate.py -> evaluation script
 ```
 
 The result of each team's evaluation is saved in the `submissions/TEAM/results` folder
@@ -218,3 +220,7 @@ regarding the competition there, and feel free to answer
 the questions of other participants as well. We will not provide a
 privileged support to any of the participants, except in situations where
 it concerns details about their submission which they do not want to share.
+
+To help us set your `conda` environment on our side, it can be
+useful to include the output of `conda env export --no-builds`
+in your submissions.
