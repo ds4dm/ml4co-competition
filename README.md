@@ -52,9 +52,9 @@ The main idea of our evaluation pipeline is that each team's submission
 consists of a single folder, i.e., `submissions/YOUR_TEAM_NAME`, which respects the
 following structure:
 ```
-submissions/TEAM/
+submissions/YOUR_TEAM_NAME/
   conda.yaml     -> the conda dependencies file, which specifies the packages to be installed (conda and/or pip)
-  init.sh        -> a custom initialization script, where additional installation commands can be put if needed (dependencies not available on conda/pip)
+  init.sh        -> the initialization script that sets up the environment (with additional dependencies not available on conda/pip)
   agents/
     primal.py    -> the code of the team's agent for the primal task, if any
     dual.py      -> the code of the team's agent for the dual task, if any
@@ -68,7 +68,7 @@ the file `agents/primal.py`, `agents/dual.py` or `agents/config.py`.
 
 ---
 **Note**: during the evaluation the `submissions/YOUR_TEAM_NAME` folder will be the working
-directory, so that a file `submissions/TEAM/xxx` can be directly accessed via
+directory, so that a file `submissions/YOUR_TEAM_NAME/xxx` can be directly accessed via
 ```Python
 with open("xxx") as f:
   do_something
