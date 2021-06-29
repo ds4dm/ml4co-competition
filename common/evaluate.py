@@ -49,7 +49,7 @@ if __name__ == '__main__':
         instances_path = pathlib.Path(f"../../instances/2_load_balancing/{args.folder}/")
         results_file = pathlib.Path(f"results/{args.task}/2_load_balancing.csv")
     elif args.problem == 'anonymous':
-        instances_path = pathlib.Path("../../instances/3_anonymous/{args.folder}/")
+        instances_path = pathlib.Path(f"../../instances/3_anonymous/{args.folder}/")
         results_file = pathlib.Path(f"results/{args.task}/3_anonymous.csv")
 
     print(f"Processing instances from {instances_path.resolve()}")
