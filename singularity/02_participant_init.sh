@@ -5,7 +5,7 @@ display_usage() {
 }
 
 # if less than one arguments supplied, display usage
-if [  $# -lt 1 ]
+if [  $# != 1 ]
 then
 	display_usage
 	exit 1

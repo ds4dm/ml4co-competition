@@ -102,6 +102,7 @@ if __name__ == '__main__':
     for seed, instance in enumerate(instance_files):
 
         # seed both the agent and the environment (deterministic behavior)
+        observation_function.seed(seed)
         policy.seed(seed)
         env.seed(seed)
 
@@ -126,8 +127,7 @@ if __name__ == '__main__':
         print(f"  initial dual bound: {initial_dual_bound}")
         print(f"  objective offset: {objective_offset}")
 
-        # reset the policy and the environment
-        policy.reset()
+        # reset the environment
         observation, action_set, reward, done, info = env.reset(str(instance), objective_limit=initial_primal_bound)
 
         if args.debug:
