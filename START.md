@@ -3,6 +3,13 @@
 Clone this repository
 ```bash
 git clone git@github.com:ds4dm/ml4co-competition.git
+cd ml4co-competition
+```
+
+Download the training instances [here](https://drive.google.com/file/d/1MytdY3IwX_aFRWdoc0mMfDN9Xg1EKUuq/view?usp=sharing),
+and extract the archive at the root of this repo
+```bash
+tar -xzf instances.tar.gz
 ```
 
 Decide on a team name, and copy-paste the example contribution
