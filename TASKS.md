@@ -34,8 +34,8 @@ In a nutshell, this class defines the following environment dynamics:
  - initial state: SCIP processes the instance until the root node LP is solved
 (includes preprocessing, cuts etc.), then applies a time limit relative to this time,
 and enters an infinite loop.
- - steps: the user provides a partial solution in the form of two
-lists: `(variable_ids, variable_values)`. SCIP solves the LP relaxation
+ - steps: the environment receives from the agent a partial solution in the form of two
+lists, `(variable_ids, variable_values)`. SCIP solves the LP relaxation
 with those variables fixed, and then tries to add the resulting LP solution as
 a primal MILP solution.
  - terminal state: the time limit has been reached, or SCIP managed to prove optimality (which should not happen).
@@ -70,6 +70,20 @@ class RootPrimalSearchDynamics(ecole.dynamics.PrimalSearchDynamics):
 
 #### Dual task
 
+The details of our dual task implementation can be found in the `BranchingDynamics` class, which extends
+Ecole's own [`BranchingDynamics`](https://doc.ecole.ai/py/en/stable/reference/environments.html#ecole.dynamics.BranchingDynamics).
+In a nutshell, this class defines the following environment dynamics:
+ - SCIP restarts are deactivated
+ - SCIP's primal heuristics are deactivated
+ - SCIP's time limit is set after the root node has been processed
+ - initial state: SCIP processes the instance until the root node LP is solved
+(includes preprocessing, cuts etc.), then applies a time limit relative to this time,
+and resumes solving until a branching decision has to be made.
+ - steps: the environment receives from the agent a branching candidate in the form of a
+non-fixed integer variable's LP column position, `var_lppos`. SCIP branches on that
+variable, and then continues solving until the next branching decision has to be made.
+ - terminal state: the time limit has been reached, or SCIP managed to prove optimality.
+
 ```python
 class BranchingDynamics(ecole.dynamics.BranchingDynamics):
 
@@ -99,6 +113,17 @@ class BranchingDynamics(ecole.dynamics.BranchingDynamics):
 ```
 
 #### Config task
+
+The details of our config task implementation can be found in the `ConfiguringDynamics` class, which extends
+Ecole's own [`ConfiguringDynamics`](https://doc.ecole.ai/py/en/stable/reference/environments.html#ecole.dynamics.ConfiguringDynamics).
+In a nutshell, this class defines the following environment dynamics:
+ - SCIP's time limit is set after the instance has been loaded
+ - initial state: SCIP loads the instance.
+ - steps: the environment receives from the agent a set of SCIP parameters in the form of a
+dictionnary, `scip_params`. SCIP sets those parameters, and then continues solving.
+ - terminal state: the time limit has been reached, or SCIP managed to prove optimality.
+
+**Note**: it is forbidden for agents to set parameters that affect the time limit in any way.
 
 ```python
 class ConfiguringDynamics(ecole.dynamics.ConfiguringDynamics):
