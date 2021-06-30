@@ -23,7 +23,7 @@ class ObjectiveLimitEnvironment(ecole.environment.Environment):
 ...
 ```
 
-#### Primal task
+#### Primal task's environment
 
 The details of our primal task implementation can be found in the `RootPrimalSearchDynamics` class, which extends
 Ecole's [`PrimalSearchDynamics`](https://doc.ecole.ai/py/en/stable/reference/environments.html#ecole.dynamics.PrimalSearchDynamics).
@@ -68,7 +68,7 @@ class RootPrimalSearchDynamics(ecole.dynamics.PrimalSearchDynamics):
         return done, action_set
 ```
 
-#### Dual task
+#### Dual task's environment
 
 The details of our dual task implementation can be found in the `BranchingDynamics` class, which extends
 Ecole's own [`BranchingDynamics`](https://doc.ecole.ai/py/en/stable/reference/environments.html#ecole.dynamics.BranchingDynamics).
@@ -112,7 +112,7 @@ class BranchingDynamics(ecole.dynamics.BranchingDynamics):
         return done, action_set
 ```
 
-#### Config task
+#### Config task's environment
 
 The details of our config task implementation can be found in the `ConfiguringDynamics` class, which extends
 Ecole's own [`ConfiguringDynamics`](https://doc.ecole.ai/py/en/stable/reference/environments.html#ecole.dynamics.ConfiguringDynamics).
@@ -161,3 +161,15 @@ class ConfiguringDynamics(ecole.dynamics.ConfiguringDynamics):
 
         return done, action_set
 ```
+
+#### Primal task's reward
+
+The reward for the primal task is the primal bound integral.
+
+#### Dual task's reward
+
+The reward for the dual task is the dual bound integral.
+
+#### Config task's reward
+
+The reward for the config task is the primal-dual bound integral.
