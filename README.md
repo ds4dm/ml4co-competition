@@ -91,7 +91,7 @@ common/
 Your team's environment should be set-up as follows
 ```bash
 cd submissions/YOUR_TEAM_NAME
-sh init.sh
+source init.sh
 ```
 
 This should install a conda environment named `ml4co` containing
