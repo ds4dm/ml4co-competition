@@ -194,6 +194,6 @@ in your submission.
 
 To make sure that your submission will install and run on our side,
 please try to evaluate it on your side within the [singularity](https://sylabs.io/docs/)
-image we provide (instructions [here](SINGULARITY.md)). If your
+image we provide (instructions [here](PIPELINE.md)). If your
 submission will not execute properly within
 this container on your side, there is little chance it will on ours.
