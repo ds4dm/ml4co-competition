@@ -31,8 +31,8 @@ source init.sh
 
 ## Implement your agent
 
-To compete in each of our three tasks, you simply have to edit
-each of the following files:
+To compete in each of our three tasks, you just have to edit
+one separate file
 ```
 agents/
   primal.py    -> your team's agent for solving the primal task
@@ -40,13 +40,16 @@ agents/
   config.py    -> your team's agent for solving the config task
 ```
 
-If you only plan to compete in a single task, say the dual task, you'll
-only have to edit the `agents/dual.py` file. You can also include any supplementary
-file which is required for your code to operate, such as a file containing
-your ML model's parameters for example.
+If you plan to compete in a single task only, say the dual task, you'll
+only have to edit the `agents/dual.py` file.
 
-**Note**: when we evaluate your agents, the `submissions/YOUR_TEAM_NAME` folder will be the working
-directory, so that a file `submissions/YOUR_TEAM_NAME/xxx` can be directly accessed via
+You can also include any supplementary file which is required for your
+code to operate, such as additional python files, or a file containing
+your machine learning model's parameters for example.
+
+**Note**: when we will evaluate your agents, the `submissions/YOUR_TEAM_NAME`
+folder will be the working directory, so that a file `submissions/YOUR_TEAM_NAME/xxx`
+can be directly accessed via
 ```Python
 with open("xxx") as f:
   do_something
