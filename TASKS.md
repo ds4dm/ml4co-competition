@@ -13,7 +13,7 @@ common/
   evaluate.py     -> evaluation script
 ```
 
-For all three `primal`, `dual` and `config` tasks we overload Ecole's environment class to add an optional
+For all three tasks we overload Ecole's environment class to add an optional
 `objective_limit` argument in `reset(instance, objective_limit)`, so that the initial primal bound of each
 instance is always used as an objective limit by SCIP (no feasible solution worst that this value will be accepted by SCIP).
 ```python
@@ -21,6 +21,16 @@ class ObjectiveLimitEnvironment(ecole.environment.Environment):
 
     def reset(self, instance, objective_limit=None, *dynamics_args, **dynamics_kwargs):
 ...
+```
+
+For the reward functions of each task,
+```python
+time_left = max(m.getParam("limits/time") - m.getSolvingTime(), 0)
+```
+
+```python
+  def set_parameters(self, objective_offset=None, initial_primal_bound=None, initial_dual_bound=None):
+      ...
 ```
 
 #### Primal task's environment
@@ -164,12 +174,59 @@ class ConfiguringDynamics(ecole.dynamics.ConfiguringDynamics):
 
 #### Primal task's reward
 
-The reward for the primal task is the primal bound integral.
+The reward for the primal task is the primal bound integral (see
+description [here](https://www.ecole.ai/2021/ml4co-competition/#metrics)).
+Implementation details can be found in the `TimeLimitPrimalIntegral` class,
+which extends Ecole's [`PrimalIntegral`](https://doc.ecole.ai/py/en/stable/reference/rewards.html#ecole.reward.PrimalIntegral).
+In a nutshell, it works as follows:
+ - the `set_parameters()` method is called before each instance is
+processed, and sets the instance's initial primal bound.
+ - the primal bound used to perform the mathematical integration is
+the initial primal bound, or the primal bound found by the SCIP solver
+if it improves upon the initial primal bound.
+ - if the episode stops before the time limit is reached, the integration
+continues over the remaining time window (`max(m.getParam("limits/time") - m.getSolvingTime(), 0)`)
+
+```python
+class TimeLimitPrimalIntegral(ecole.reward.PrimalIntegral):
+...
+```
 
 #### Dual task's reward
 
-The reward for the dual task is the dual bound integral.
+The reward for the dual task is the dual bound integral (see
+description [here](https://www.ecole.ai/2021/ml4co-competition/#metrics)).
+Implementation details can be found in the `TimeLimitDualIntegral` class,
+which extends Ecole's [`DualIntegral`](https://doc.ecole.ai/py/en/stable/reference/rewards.html#ecole.reward.DualIntegral).
+In a nutshell, it works as follows:
+ - the `set_parameters()` method is called before each instance is
+processed, and sets the instance's initial dual bound.
+ - the dual bound used to perform the mathematical integration is
+the initial dual bound, or the dual bound found by the SCIP solver
+if it improves upon the initial dual bound.
+ - if the episode stops before the time limit is reached, the integration
+continues over the remaining time window (`max(m.getParam("limits/time") - m.getSolvingTime(), 0)`).
+
+```python
+class TimeLimitDualIntegral(ecole.reward.DualIntegral):
+...
+```
 
 #### Config task's reward
 
-The reward for the config task is the primal-dual bound integral.
+The reward for the config task is the primal-dual bound integral (see
+description [here](https://www.ecole.ai/2021/ml4co-competition/#metrics)).
+Implementation details can be found in the `TimeLimitPrimalDualIntegral` class,
+which extends Ecole's [`PrimalDualIntegral`](https://doc.ecole.ai/py/en/stable/reference/rewards.html#ecole.reward.PrimalDualIntegral).
+In a nutshell, it works as follows:
+ - the `set_parameters()` method is called before each instance is
+processed, and sets the instance's initial primal and dual bounds.
+ - the primal and dual bounds used to perform the mathematical integration are
+the initial primal and dual bounds, or the bounds found by the SCIP solver
+if they improves upon the initial ones.
+ - if the episode stops before the time limit is reached, the integration
+continues over the remaining time window (`max(m.getParam("limits/time") - m.getSolvingTime(), 0)`).
+
+```python
+class TimeLimitPrimalDualIntegral(ecole.reward.PrimalDualIntegral):
+```
