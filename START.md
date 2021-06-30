@@ -114,6 +114,11 @@ submissions/YOUR_TEAM_NAME/
       3_anonymous.csv
 ```
 
+**Note**: you can append `--timelimit T` to the evaluation commands to override
+the default time limit for evaluating each instance. For example, setting the
+time limit to `T=10` seconds can be usefull for debugging. You can also append
+`--debug` to print additional information during the evaluation.
+
 ## Submit your agent
 
 The main idea of our evaluation pipeline is that each team's submission
