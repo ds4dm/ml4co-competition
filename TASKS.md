@@ -23,15 +23,19 @@ class ObjectiveLimitEnvironment(ecole.environment.Environment):
 ...
 ```
 
-For the reward functions of each task,
+For all three tasks, the reward function share the same API and the same global behaviour. If the solver stops
+before the time limit (the `limits/time` SCIP parameter), then the integration continues over the remaining time.
 ```python
 time_left = max(m.getParam("limits/time") - m.getSolvingTime(), 0)
 ```
-
+Each reward function is equipped with a `set_parameters()` method, so that we can provide the initial primal
+and dual bounds of each instance in order to compute the integrals unambiguously.
 ```python
   def set_parameters(self, objective_offset=None, initial_primal_bound=None, initial_dual_bound=None):
       ...
 ```
+Note that an optional `objective_offset` can be provided as well to cimpute the integrals, although this feature is not
+used in the evaluation computations (`objective_offset=0`).
 
 #### Primal task's environment
 
@@ -186,6 +190,7 @@ the initial primal bound, or the primal bound found by the SCIP solver
 if it improves upon the initial primal bound.
  - if the episode stops before the time limit is reached, the integration
 continues over the remaining time window (`max(m.getParam("limits/time") - m.getSolvingTime(), 0)`)
+and is incorporated into the final reward.
 
 ```python
 class TimeLimitPrimalIntegral(ecole.reward.PrimalIntegral):
@@ -205,7 +210,8 @@ processed, and sets the instance's initial dual bound.
 the initial dual bound, or the dual bound found by the SCIP solver
 if it improves upon the initial dual bound.
  - if the episode stops before the time limit is reached, the integration
-continues over the remaining time window (`max(m.getParam("limits/time") - m.getSolvingTime(), 0)`).
+continues over the remaining time window (`max(m.getParam("limits/time") - m.getSolvingTime(), 0)`)
+and is incorporated into the final reward.
 
 ```python
 class TimeLimitDualIntegral(ecole.reward.DualIntegral):
@@ -225,7 +231,8 @@ processed, and sets the instance's initial primal and dual bounds.
 the initial primal and dual bounds, or the bounds found by the SCIP solver
 if they improves upon the initial ones.
  - if the episode stops before the time limit is reached, the integration
-continues over the remaining time window (`max(m.getParam("limits/time") - m.getSolvingTime(), 0)`).
+continues over the remaining time window (`max(m.getParam("limits/time") - m.getSolvingTime(), 0)`)
+and is incorporated into the final reward.
 
 ```python
 class TimeLimitPrimalDualIntegral(ecole.reward.PrimalDualIntegral):
