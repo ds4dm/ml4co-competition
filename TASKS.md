@@ -67,3 +67,72 @@ class RootPrimalSearchDynamics(ecole.dynamics.PrimalSearchDynamics):
 
         return done, action_set
 ```
+
+#### Dual task
+
+```python
+class BranchingDynamics(ecole.dynamics.BranchingDynamics):
+
+    def __init__(self, time_limit):
+        super().__init__()
+        self.time_limit = time_limit
+
+    def reset_dynamics(self, model):
+        pyscipopt_model = model.as_pyscipopt()
+
+        # disable SCIP heuristics
+        pyscipopt_model.setHeuristics(pyscipopt.scip.PY_SCIP_PARAMSETTING.OFF)
+
+        # disable restarts
+        model.set_params({
+            'estimation/restarts/restartpolicy': 'n',
+        })
+
+        # process the root node
+        done, action_set = super().reset_dynamics(model)
+
+        # set time limit after reset
+        reset_time = pyscipopt_model.getSolvingTime()
+        pyscipopt_model.setParam("limits/time", self.time_limit + reset_time)
+
+        return done, action_set
+```
+
+#### Config task
+
+```python
+class ConfiguringDynamics(ecole.dynamics.ConfiguringDynamics):
+
+    def __init__(self, time_limit):
+        super().__init__()
+        self.time_limit = time_limit
+
+    def reset_dynamics(self, model):
+        pyscipopt_model = model.as_pyscipopt()
+
+        # process the root node
+        done, action_set = super().reset_dynamics(model)
+
+        # set time limit after reset
+        reset_time = pyscipopt_model.getSolvingTime()
+        pyscipopt_model.setParam("limits/time", self.time_limit + reset_time)
+
+        return done, action_set
+
+    def step_dynamics(self, model, action):
+        forbidden_params = [
+            "limits/time",
+            "timing/clocktype",
+            "timing/enabled",
+            "timing/reading",
+            "timing/rareclockcheck",
+            "timing/statistictiming"]
+
+        for param in forbidden_params:
+            if param in action:
+                raise ValueError(f"Setting the SCIP parameter '{param}' is forbidden.")
+
+        done, action_set = super().step_dynamics(model, action)
+
+        return done, action_set
+```
