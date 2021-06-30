@@ -13,7 +13,7 @@ submissions/  -> the team submissions
 singularity/  -> the singularity image and scripts of our evaluation pipeline
 ```
 
-The competition's evaluation pipeline requires Python 3.7, as well as `conda`
+The competition's evaluation pipeline is based on Singularity 3.7, Python 3.7, and `conda+pip`
 to install the software dependencies.
 
 ## 1. Getting started
