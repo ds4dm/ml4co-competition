@@ -78,7 +78,7 @@ submissions/YOUR_TEAM_NAME/
 ```
 See [gettng started](START.md) for help on how to make a submission.
 
-### 2.4. Singularity
+### 2.4. Singularity scripts
 
 Team submissions will be evaluated within an Ubuntu-based singularity container,
 in order to isolate any side-effect from the code's execution on the host. As such, we provide
