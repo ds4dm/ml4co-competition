@@ -21,9 +21,9 @@ singularity/  -> the singularity image and scripts of our evaluation pipeline
 
  - **[Tasks description](TASKS.md)**: implementation details about the three environments (`primal`, `dual`, `config`) and reward functions.
 
- - **[Evaluation pipeline](SINGULARITY.md)**: before you submit, make sure your code installs and runs within our singularity container.
+ - **[Evaluation pipeline](PIPELINE.md)**: before you submit, make sure your code installs and runs within our singularity container.
 
- - **[Evaluation platform](EVALUATION.md)**: the hardware, software, and OS specifications of the platform your code will be evaluated on.
+ - **[Evaluation platform](PLATFORM.md)**: the hardware, software, and OS specifications of the platform your code will be evaluated on.
 
  - **Software APIs**: **[Ecole](https://doc.ecole.ai/)** - **[SCIP](https://scipopt.org/doc/html/)** - **[PySCIPOpt](https://scipopt.github.io/PySCIPOpt/docs/html/)**
 
