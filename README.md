@@ -4,7 +4,13 @@
 
 This repository contains the base code that supports the competition, as well as
 some code examples and baseline implementations for each of the three tasks of
-the competition (primal, dual, config). The structure is as follows:
+the competition (primal, dual, config).
+
+## 1. [Getting Started](START.md)
+
+## 2. File structure
+
+Files in this repo are organized as follows
 ```
 instances/    -> the datasets
 common/       -> the common code base of the competition, i.e., the environment, reward, and evaluation scripts
@@ -16,13 +22,11 @@ singularity/  -> the singularity image and scripts of our evaluation pipeline
 The competition's evaluation pipeline is based on Singularity 3.7, Python 3.7, and `conda+pip`
 to install the software dependencies.
 
-## 1. Getting started
+### 2.1. Datasets
 
-### 1.1. Datasets
-
-The training datasets can be downloaded from
+After the trainng instances have been downloaded 
 [here](https://drive.google.com/file/d/1MytdY3IwX_aFRWdoc0mMfDN9Xg1EKUuq/view?usp=sharing),
-and are to be placed inside the `instances` folder. The folder layout looks as follows:
+and placed inside the `instances` folder, the dataset structure should look like
 ```
 instances/
   1_item_placement/
@@ -46,7 +50,18 @@ can be considered training instances.
 The test instances used to evaluate the submissions
 will not be made public before the end of the competition.
 
-### 1.2. Your submission
+### 2.2. Common code base
+
+The Python scripts which are used to evaluate a submission are common to every
+participant, and can be found in the `common` folder
+```
+common/
+  environments.py -> definition of the POMDP environments for each task
+  rewards.py      -> definition of the reward functions for each task
+  evaluate.py     -> evaluation script
+```
+
+### 2.3. Submissions
 
 The main idea of our evaluation pipeline is that each team's submission
 consists of a single folder, i.e., `submissions/YOUR_TEAM_NAME`, which respects the
@@ -61,93 +76,9 @@ submissions/YOUR_TEAM_NAME/
     config.py    -> the code of the team's agent for the config task, if any
   xxx            -> any other necessary file (for example, the parameters of an ML model)
 ```
+See [gettng started](START.md) for help on how to make a submission.
 
-To get started, copy-paste the content of the `submissions/example` folder
-into a new folder `submissions/YOUR_TEAM_NAME`, and edit
-the file `agents/primal.py`, `agents/dual.py` or `agents/config.py`.
-
-**Note**: during the evaluation the `submissions/YOUR_TEAM_NAME` folder will be the working
-directory, so that a file `submissions/YOUR_TEAM_NAME/xxx` can be directly accessed via
-```Python
-with open("xxx") as f:
-  do_something
-```
-
-## 2. Running the evaluation
-
-The Python scripts which are used to evaluate a submission are common to every
-participant, and can be found in the `common` folder
-```
-common/
-  environments.py -> definition of the POMDP environments for each task
-  rewards.py      -> definition of the reward functions for each task
-  evaluate.py     -> evaluation script
-```
-
-### 2.1. On the host
-
-#### Environment setup
-
-Your team's environment should be set-up as follows
-```bash
-cd submissions/YOUR_TEAM_NAME
-source init.sh
-```
-
-This should install a conda environment named `ml4co` containing
-all the required dependencies.
-
-#### Running the evaluation
-
-Your team's submission can be evaluated on the `valid` instances of
-each problem benchmark as follows.
-
-```bash
-cd submissions/YOUR_TEAM_NAME
-conda activate ml4co
-
-# Primal task
-python ../../common/evaluate.py primal item_placement
-python ../../common/evaluate.py primal load_balancing
-python ../../common/evaluate.py primal anonymous
-
-# Dual task
-python ../../common/evaluate.py dual item_placement
-python ../../common/evaluate.py dual load_balancing
-python ../../common/evaluate.py dual anonymous
-
-# Config task
-python ../../common/evaluate.py config item_placement
-python ../../common/evaluate.py config load_balancing
-python ../../common/evaluate.py config anonymous
-```
-
-**Note**: you can append `--timelimit T` to the evaluation commands to override
-the default time limit for evaluating each instance. For example, setting the
-time limit to `T=10` seconds can be usefull for debugging. You can also append
-`--debug` to print additional information during the evaluation.
-
-#### Evaluation results
-
-The result of each team's evaluation is saved to the following csv files:
-```
-submissions/YOUR_TEAM_NAME/
-  results/
-    primal/
-      1_item_placement.csv
-      2_load_balancing.csv
-      3_anonymous.csv
-    dual/
-      1_item_placement.csv
-      2_load_balancing.csv
-      3_anonymous.csv
-    config/
-      1_item_placement.csv
-      2_load_balancing.csv
-      3_anonymous.csv
-```
-
-### 2.2. Within a singularity container
+### 2.4. Singularity
 
 Team submissions will be evaluated within an Ubuntu-based singularity container,
 in order to isolate any side-effect from the code's execution on the host. As such, we provide
