@@ -96,7 +96,47 @@ python ../../common/evaluate.py config load_balancing
 python ../../common/evaluate.py config anonymous
 ```
 
-The results will be saved to the following csv files:
+**Note**: you can append `--timelimit T` (or `-t T`) to the evaluation commands to override
+the default time limit for evaluating each instance. For example, setting the
+time limit to `T=10` seconds can be usefull for debugging. You can also append
+`--debug` (or `-d`) to print additional information during the evaluation.
+
+**Example**: evaluation of the `primal` agent of the `example` team on the
+`item_placement` validation instances, with a time limit of `T=10` seconds
+```bash
+cd submissions/example/
+conda activate ml4co
+python ../../common/evaluate.py primal item_placement -t 10
+```
+
+Output
+```
+Evaluating the primal task agent.
+Processing instances from /home/maxime/ml4co-competition/instances/1_item_placement/valid
+Saving results to /home/maxime/ml4co-competition/submissions/example/results/primal/1_item_placement.csv
+
+Instance item_placement_9969.mps.gz
+  seed: 0
+  initial primal bound: 588.2972653370006
+  initial dual bound: 9.231614899000279
+  objective offset: 0
+  cumulated reward (to be maximized): -5884.904040351671
+
+Instance item_placement_9963.mps.gz
+  seed: 1
+  initial primal bound: 585.4090918017991
+  initial dual bound: 4.434889350800125
+  objective offset: 0
+  cumulated reward (to be maximized): -5856.2727113597275
+
+...
+```
+The cumulated reward for the `primal` task is the
+primal bound integral as defined [here](https://www.ecole.ai/2021/ml4co-competition/#metrics). As can be
+seen, the `example` agent does not perform very well in this task, with a primal integral roughly
+equal to the initial primal bound times the time limit, 10.
+
+The evaluation results are saved to a distinct csv file for each task and each problem bechmark:
 ```
 submissions/YOUR_TEAM_NAME/
   results/
@@ -114,11 +154,6 @@ submissions/YOUR_TEAM_NAME/
       3_anonymous.csv
 ```
 
-**Note**: you can append `--timelimit T` to the evaluation commands to override
-the default time limit for evaluating each instance. For example, setting the
-time limit to `T=10` seconds can be usefull for debugging. You can also append
-`--debug` to print additional information during the evaluation.
-
 ## Submit your agent
 
 The main idea of our evaluation pipeline is that each team's submission
@@ -135,17 +170,19 @@ submissions/YOUR_TEAM_NAME/
   xxx            -> any other necessary file (for example, the parameters of an ML model)
 ```
 
-Please send us such folder compressed into a single ZIP file when you make
-a submission, and also please tell us whether your code requires a GPU or not
-to run.
+Please send us your team's folder compressed into a single ZIP file when you make
+a submission, along with the following information:
+ - in which task(s) you are competiong (primal, dual, config)
+ - if your code requires a GPU or not to run
 
 ## Additional remarks
 
 We will not run the training of your ML models. Please send us
 only your final, pre-trained model, ready for evaluation.
 
-We provide an official support to participants via the [Github discussions](https://github.com/ds4dm/ml4co-competition/discussions)
-feature. Please direct any technical or general question
+We provide an official support to participants via the
+[Github discussions](https://github.com/ds4dm/ml4co-competition/discussions)
+of this repository. Please direct any technical or general question
 regarding the competition there, and feel free to answer
 the questions of other participants as well. We will not provide a
 privileged support to any of the participants, except in situations where
@@ -153,8 +190,10 @@ it concerns a detail about their submission which they do not want to share.
 
 To help us set up your `conda` environment on our side, it can be
 useful to include the output of `conda env export --no-builds`
-in your submissions.
+in your submission.
 
 To make sure that your submission will install and run on our side,
 please try to evaluate it on your side within the [singularity](https://sylabs.io/docs/)
-image we provide.
+image we provide (instructions [here](SINGULARITY.md)). If your
+submission will not execute properly within
+this container on your side, there is little chance it will on ours.
