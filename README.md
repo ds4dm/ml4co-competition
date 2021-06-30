@@ -1,14 +1,21 @@
 ### Machine Learning for Combinatorial Optimization - NeurIPS 2021 Competition
 
-This repository contains the base code that supports the competition, as well as
-some code examples and baseline implementations for each of the three decision tasks
-that participants can compete in (`primal`, `dual`, `config`).
-
 **[Official website](https://www.ecole.ai/2021/ml4co-competition/)**: competition guidelines, team registration, rules, and leaderboard.
 
 **[Getting Started](START.md)**: get the data, implement and evaluate your agent, make a submission.
 
-**More information**:
+This repository contains the base code that supports the competition, as well as
+some code examples and baseline implementations for each of the three decision tasks
+that participants can compete in (`primal`, `dual`, `config`). It is organized as follows
+```
+instances/    -> the datasets
+common/       -> the common code base of the competition, i.e., the environment, reward, and evaluation scripts
+submissions/  -> the team submissions
+  example/    -> an example submission
+singularity/  -> the singularity image and scripts of our evaluation pipeline
+```
+
+**Documentation**:
 
  - **[Data description](DATA.md)**: the three datasets (`item_placement`, `load_balancing`, `anonymous`) and the data files.
 
@@ -18,7 +25,7 @@ that participants can compete in (`primal`, `dual`, `config`).
 
  - **[Evaluation platform](EVALUATION.md)**: the hardware, software, and OS specifications of the platform your code will be evaluated on.
 
- - **Documentation**: **[Ecole](https://doc.ecole.ai/)** - **[SCIP](https://scipopt.org/doc/html/)** - **[PySCIPOpt](https://scipopt.github.io/PySCIPOpt/docs/html/)**
+ - **Software APIs**: **[Ecole](https://doc.ecole.ai/)** - **[SCIP](https://scipopt.org/doc/html/)** - **[PySCIPOpt](https://scipopt.github.io/PySCIPOpt/docs/html/)**
 
 We thank [Compute-Canada](https://www.computecanada.ca/), [Calcul Québec](https://www.calculquebec.ca/en/) and
 [Westgrid](https://www.westgrid.ca/) for providing the infrastructure and compute ressources that allow us to
