@@ -1,12 +1,28 @@
-# NeurIPS 2021 Competition - Machine Learning for Combinatorial Optimization
-
-**[Competition guidelines](https://www.ecole.ai/2021/ml4co-competition/)** - **[Ecole documentation](https://doc.ecole.ai/)** - **[SCIP documentation](https://scipopt.org/doc/html/)** - **[PySCIPOpt API](https://scipopt.github.io/PySCIPOpt/docs/html/)**
+### Machine Learning for Combinatorial Optimization - NeurIPS 2021 Competition
 
 This repository contains the base code that supports the competition, as well as
-some code examples and baseline implementations for each of the three tasks of
-the competition (primal, dual, config).
+some code examples and baseline implementations for each of the three decision tasks
+that participants can compete in (`primal`, `dual`, `config`).
 
-## 1. [Getting Started](START.md)
+**[Official website](https://www.ecole.ai/2021/ml4co-competition/)**: competition guidelines, team registration, rules, and leaderboard.
+
+**[Getting Started](START.md)**: get the data, implement and evaluate your agent, make a submission.
+
+**More information**:
+
+ - **[Data description](DATA.md)**: the three datasets (`item_placement`, `load_balancing`, `anonymous`) and the data files.
+
+ - **[Tasks description](TASKS.md)**: implementation details about the three environments (`primal`, `dual`, `config`) and reward functions.
+
+ - **[Evaluation pipeline](SINGULARITY.md)**: before you submit, make sure your code installs and runs within our singularity container.
+
+ - **[Evaluation platform](EVALUATION.md)**: the hardware, software, and OS specifications of the platform your code will be evaluated on.
+
+ - **Documentation**: **[Ecole](https://doc.ecole.ai/)** - **[SCIP](https://scipopt.org/doc/html/)** - **[PySCIPOpt](https://scipopt.github.io/PySCIPOpt/docs/html/)**
+
+We thank [Compute-Canada](https://www.computecanada.ca/), [Calcul Québec](https://www.calculquebec.ca/en/) and
+[Westgrid](https://www.westgrid.ca/) for providing the infrastructure and compute ressources that allow us to
+run the competition.
 
 ## 2. File structure
 
