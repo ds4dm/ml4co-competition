@@ -66,15 +66,12 @@ To get started, copy-paste the content of the `submissions/example` folder
 into a new folder `submissions/YOUR_TEAM_NAME`, and edit
 the file `agents/primal.py`, `agents/dual.py` or `agents/config.py`.
 
----
 **Note**: during the evaluation the `submissions/YOUR_TEAM_NAME` folder will be the working
 directory, so that a file `submissions/YOUR_TEAM_NAME/xxx` can be directly accessed via
 ```Python
 with open("xxx") as f:
   do_something
 ```
-
----
 
 ## 2. Running the evaluation
 
@@ -125,7 +122,14 @@ python ../../common/evaluate.py config load_balancing
 python ../../common/evaluate.py config anonymous
 ```
 
-The result of each team's evaluation is saved here:
+**Note**: you can append `--timelimit T` to the evaluation commands to override
+the default time limit for evaluating each instance. For example, setting the
+time limit to `T=10` seconds can be usefull for debugging. You can also append
+`--debug` to print additional information during the evaluation.
+
+#### Evaluation results
+
+The result of each team's evaluation is saved to the following csv files:
 ```
 submissions/YOUR_TEAM_NAME/
   results/
@@ -142,14 +146,6 @@ submissions/YOUR_TEAM_NAME/
       2_load_balancing.csv
       3_anonymous.csv
 ```
-
----
-**Note**: you can append `--timelimit T` to the evaluation commands to override
-the default time limit for evaluating each instance. For example, setting the
-time limit to `T=10` seconds can be usefull for debugging. You can also append
-`--debug` to print additional information during the evaluation.
-
----
 
 ### 2.2. Within a singularity container
 
@@ -199,13 +195,9 @@ sh singularity/03_participant_run.sh YOUR_TEAM_NAME config load_balancing
 sh singularity/03_participant_run.sh YOUR_TEAM_NAME config anonymous
 ```
 
----
-NOTE
-
-Additional argument such as `--timelimit T` or `--debug` can also be provided here,
+**Note**: additional argument such as `--timelimit T` or `--debug` can also be provided here,
 and will be passed to the Python evaluation script.
 
----
 
 ## 3. Additional remarks
 
