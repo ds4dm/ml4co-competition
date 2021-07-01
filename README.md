@@ -33,12 +33,12 @@ singularity/  -> the singularity image and scripts of our evaluation pipeline
 During the competition we will evaluate submissions
 on a weekly basis, and update our online leaderboards
 while the competition is running. Participants do not have
-to send a submission every week, but are encourage to submit
+to send a submission every week, but are encouraged to submit
 regularly to make the competition a live event. In order to
 prevent test overfitting, those intermediate evaluations will
 be performed on a fixed subset of the test set (20%),
 while only the final evalaution that will tell the winners will be
-performed on the entire test sets.
+performed on the entire test set.
 
 ### Additional remarks
 
