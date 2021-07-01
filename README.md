@@ -9,7 +9,7 @@ some code examples and baseline implementations for each of the three decision t
 that participants can compete in (`primal`, `dual`, `config`). It is organized as follows
 ```
 instances/    -> the datasets
-common/       -> the common code base of the competition, i.e., the environment, reward, and evaluation scripts
+common/       -> the common code base, i.e., environments, rewards and evaluation scripts
 submissions/  -> the team submissions
   example/    -> an example submission
 singularity/  -> the singularity image and scripts of our evaluation pipeline
