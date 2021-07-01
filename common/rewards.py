@@ -23,6 +23,7 @@ class IntegralParameters():
             self.initial_primal_bound = model.as_pyscipopt().getObjlimit()
 
         if self.initial_dual_bound is None:
+            m = model.as_pyscipopt()
             self.initial_dual_bound = -m.infinity() if m.getObjectiveSense() == "minimize" else m.infinity()
 
 
