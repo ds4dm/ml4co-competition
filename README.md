@@ -48,7 +48,7 @@ feature. Please direct any technical or general question
 regarding the competition there, and feel free to answer
 the questions of other participants as well. We will not provide a
 privileged support to any of the participants, except in situations where
-it concerns a detail about their submission which they do not want to share.
+it concerns information about their submission which they do not want to share.
 To contact us directly, use the competition's email adress: [ml4co.competition@gmail.com
 ](mailto:ml4co.competition@gmail.com).
 
