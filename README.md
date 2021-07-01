@@ -47,6 +47,8 @@ To contact us directly, use the competition's email adress: [ml4co.competition@g
 We only offer support for Linux and MacOS, the Windows platform being
 currently unsupported by Ecole.
 
+### Sponsors
+
 We thank [Compute-Canada](https://www.computecanada.ca/), [Calcul Québec](https://www.calculquebec.ca/en/) and
 [Westgrid](https://www.westgrid.ca/) for providing the infrastructure and compute ressources that allow us to
 run the competition.
