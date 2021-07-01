@@ -170,10 +170,12 @@ submissions/YOUR_TEAM_NAME/
   xxx            -> any other necessary file (for example, the parameters of an ML model)
 ```
 
-Please send us your team's folder compressed into a single ZIP file when you make
+Please send your team's folder compressed into a single ZIP file to the email
+address [ml4co.competition@gmail.com](mailto:ml4co.competition@gmail.com) when you make
 a submission, along with the following information:
- - in which task(s) you are competiong (primal, dual, config)
- - if your code requires a GPU or not to run
+ - name of your team
+ - task(s) in which you are competing (primal, dual, config)
+ - whether your code requires a GPU or not to run
 
 ## Additional remarks
 
