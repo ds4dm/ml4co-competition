@@ -28,10 +28,6 @@ singularity/  -> the singularity image and scripts of our evaluation pipeline
 
  - **APIs**: **[Ecole](https://doc.ecole.ai/)** - **[SCIP](https://scipopt.org/doc/html/)** - **[PySCIPOpt](https://scipopt.github.io/PySCIPOpt/docs/html/)**
 
-We thank [Compute-Canada](https://www.computecanada.ca/), [Calcul Québec](https://www.calculquebec.ca/en/) and
-[Westgrid](https://www.westgrid.ca/) for providing the infrastructure and compute ressources that allow us to
-run the competition.
-
 ### Additional remarks
 
 We will not run the training of your ML models. Please send us
@@ -47,3 +43,7 @@ it concerns a detail about their submission which they do not want to share.
 
 We only offer support for Linux and MacOS, the Windows platform being
 currently unsupported by Ecole.
+
+We thank [Compute-Canada](https://www.computecanada.ca/), [Calcul Québec](https://www.calculquebec.ca/en/) and
+[Westgrid](https://www.westgrid.ca/) for providing the infrastructure and compute ressources that allow us to
+run the competition.
