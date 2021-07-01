@@ -176,6 +176,7 @@ a submission, along with the following information:
  - name of your team
  - task(s) in which you are competing (primal, dual, config)
  - whether your code requires a GPU or not to run
+ - whether your team is composed only of students or not (student leaderboard)
 
 ## Additional remarks
 
