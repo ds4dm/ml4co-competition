@@ -70,7 +70,7 @@ class RootPrimalSearchDynamics(ecole.dynamics.PrimalSearchDynamics):
 class BranchingDynamics(ecole.dynamics.BranchingDynamics):
 
     def __init__(self, time_limit):
-        super().__init__()
+        super().__init__(pseudo_candidates=True)
         self.time_limit = time_limit
 
     def reset_dynamics(self, model):
