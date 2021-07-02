@@ -1,0 +1,13 @@
+channels:
+  - conda-forge
+  - defaults
+  - pytorch
+
+dependencies:
+  # Minimal dependencies for the competition
+  - python=3.7
+  - scip=7.0.3
+  - ecole=0.6.2
+  - numpy
+  - pyscipopt
+
