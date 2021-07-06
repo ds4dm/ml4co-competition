@@ -5,9 +5,16 @@ import numpy as np
 class ObservationFunction():
 
     def __init__(self, problem):
+        # called once for each problem benchmark
         self.problem = problem  # to devise problem-specific observations
 
+    def seed(self, seed):
+        # called before each episode
+        # use this seed to make your code deterministic
+        pass
+
     def before_reset(self, model):
+        # called when a new episode is about to start
         pass
 
     def extract(self, model, done):
@@ -18,6 +25,7 @@ class ObservationFunction():
         variables = m.getVars(transformed=True)
         inf = m.infinity()
 
+        # extract the upper and lower bounds of all variables
         lbs = np.asarray([v.getLbLocal() for v in variables])
         ubs = np.asarray([v.getUbLocal() for v in variables])
         has_lb = np.asarray([lb > -inf for lb in lbs])
@@ -31,15 +39,14 @@ class ObservationFunction():
 class Policy():
 
     def __init__(self, problem):
+        # called once for each problem benchmark
         self.rng = np.random.RandomState()
         self.problem = problem  # to devise problem-specific policies
 
     def seed(self, seed):
+        # called before each episode
+        # use this seed to make your code deterministic
         self.rng = np.random.RandomState(seed)
-
-    def reset(self):
-        # called before an episode starts
-        pass
 
     def __call__(self, action_set, observation):
         has_lb, has_ub, lbs, ubs = observation 
