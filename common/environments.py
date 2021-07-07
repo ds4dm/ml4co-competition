@@ -149,38 +149,29 @@ class ObjectiveLimitEnvironment(ecole.environment.Environment):
 
             self.dynamics.set_dynamics_random_state(self.model, self.random_engine)
 
+            # Reset data extraction functions
             self.reward_function.before_reset(self.model)
             self.observation_function.before_reset(self.model)
             self.information_function.before_reset(self.model)
+
+            # Place the environment in its initial state
             done, action_set = self.dynamics.reset_dynamics(
                 self.model, *dynamics_args, **dynamics_kwargs
             )
+            self.can_transition = not done
 
+            # Extract additional data to be returned by reset
             reward_offset = self.reward_function.extract(self.model, done)
-            observation = self.observation_function.extract(self.model, done)
+            if not done:
+                observation = self.observation_function.extract(self.model, done)
+            else:
+                observation = None
             information = self.information_function.extract(self.model, done)
+
             return observation, action_set, reward_offset, done, information
         except Exception as e:
             self.can_transition = False
             raise e
-
-    def step(self, action, *dynamics_args, **dynamics_kwargs):
-        if not self.can_transition:
-            raise ecole.core.environment.Exception("Environment need to be reset.")
-
-        try:
-            done, action_set = self.dynamics.step_dynamics(
-                self.model, action, *dynamics_args, **dynamics_kwargs
-            )
-            reward = self.reward_function.extract(self.model, done)
-            observation = self.observation_function.extract(self.model, done)
-            information = self.information_function.extract(self.model, done)
-            return observation, action_set, reward, done, information
-        except Exception as e:
-            self.can_transition = False
-            raise e
-
-
 
 class RootPrimalSearch(ObjectiveLimitEnvironment):
     __Dynamics__ = RootPrimalSearchDynamics
