@@ -1,28 +1,28 @@
 channels:
   - conda-forge
   - defaults
-  # - pytorch
+#   - pytorch
 
 dependencies:
-  # Minimal dependencies for the competition
+# minimal dependencies for the competition
   - python=3.7
   - scip=7.0.3
-  - ecole=0.7.1
+  - ecole=0.7.2
   - numpy
   - pyscipopt
 
-  # additional conda dependencies go here
-  # - torch
-  # - tensorflow
-  # - scikit-learn
+# additional conda dependencies go here
+#   - torch
+#   - tensorflow
+#   - scikit-learn
 
-  # additional pip dependencies go here
-  # - pip
-  # - pip:
-  #   - something
-  #   - git+https://github.com/user/bar
-  #   - url
+# additional pip dependencies go here
+#   - pip
+#   - pip:
+#     - something
+#     - git+https://github.com/user/bar
+#     - url
 
-  # Please send us a snapshot of your environment as well
-  # to help us troubleshoot potential issues
-  # conda env export --no-builds
+# Please do not hesitate to send us also a snapshot of your final
+# environment to help us troubleshoot potential installation issues:
+# conda env export --no-builds
