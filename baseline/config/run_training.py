@@ -1,5 +1,7 @@
 import argparse
 import pathlib
+import csv
+import json
 
 import ecole as ec
 
@@ -59,6 +61,20 @@ def runEcole(settings, instance):
 
     print("New Ecole run with instance ", instance)
 
+    # read the instance's initial primal and dual bounds from JSON file
+    with open(pathlib.PosixPath(instance).with_name(pathlib.PosixPath(instance).stem).with_suffix('.json')) as f:
+        instance_info = json.load(f)
+
+    # set up the reward function parameters for that instance
+    initial_primal_bound = instance_info["primal_bound"]
+    initial_dual_bound = instance_info["dual_bound"]
+    objective_offset = 0
+
+    TimeLimitPrimalDualIntegral().set_parameters(
+            initial_primal_bound=initial_primal_bound,
+            initial_dual_bound=initial_dual_bound,
+            objective_offset=objective_offset)
+
     # start a new episode
     env.reset(instance)
 
@@ -96,6 +112,12 @@ if __name__ == '__main__':
         type=int,
     )
     parser.add_argument(
+        '-s', '--seed',
+        help='Random seed for instance selection.',
+        default=0,
+        type=int,
+    )
+    parser.add_argument(
         '-e', '--nevaluations',
         help='Number of function evaluations of SMAC.',
         default=10,
@@ -106,22 +128,40 @@ if __name__ == '__main__':
     # collect the instance files
     if args.problem == 'item_placement':
         instances_path = pathlib.Path(f"../../instances/1_item_placement/train/")
+        results_file = pathlib.Path(f"results/config/1_item_placement.csv")
     elif args.problem == 'load_balancing':
         instances_path = pathlib.Path(f"../../instances/2_load_balancing/train/")
+        results_file = pathlib.Path(f"results/config/2_load_balancing.csv")
     elif args.problem == 'anonymous':
         instances_path = pathlib.Path(f"../../instances/3_anonymous/train/")
+        results_file = pathlib.Path(f"results/config/3_anonymous.csv")
 
     print(f"Processing instances from {instances_path.resolve()}")
     instance_files = list(instances_path.glob('*.mps.gz'))
 
     # randomly choose set of training instances
-    instances = random.sample(instance_files, 10)
+    indices = [i for i in range(len(instance_files))]
+    random.seed(a=args.seed)
+    random.shuffle(indices)
+    instances = [instance_files[i] for i in indices[:args.ninstances]]
 
     # write instances to a file
     instancefile = open('instances.txt', "a+")
     for i in range(len(instances)):
         instancefile.write(str(instances[i]) + '\n')
     instancefile.close()
+
+    print(f"Saving results to {results_file.resolve()}")
+    results_file.parent.mkdir(parents=True, exist_ok=True)
+    results_fieldnames = ['instance', 'seed', 'initial_primal_bound', 'initial_dual_bound', 'objective_offset', 'cumulated_reward']
+    with open(results_file, mode='w') as csv_file:
+        writer = csv.DictWriter(csv_file, fieldnames=results_fieldnames)
+        writer.writeheader()
+
+    # get primal-dual integral function that is also used in evaluation
+    import sys
+    sys.path.insert(1, str(pathlib.Path(f"../../common/")))
+    from rewards import TimeLimitPrimalDualIntegral
     
     # create ecole environment
     env = ec.environment.Configuring(
@@ -133,7 +173,7 @@ if __name__ == '__main__':
           observation_function = None,
 
           # minimize the primal-dual integral
-          reward_function = ec.reward.PrimalDualIntegral(),
+          reward_function = TimeLimitPrimalDualIntegral(),
 
           # collect additional metrics for information purposes
           information_function = {}
@@ -144,15 +184,6 @@ if __name__ == '__main__':
     params = getParamsFromFile('parameters.pcs')
     cs.add_hyperparameters(params)
 
-    # randomly choose set of training instances
-    instances = random.sample(instance_files, args.ninstances)
-
-    # write instances to a file
-    instancefile = open('instances.txt', "a+")
-    for i in range(len(instances)):
-        instancefile.write(str(instances[i]) + '\n')
-    instancefile.close()
-    
     # Scenario object
     scenario = Scenario({"run_obj": "quality",  # we optimize quality (aka primal-dual integral)
                          "runcount-limit": args.nevaluations, # max. number of function evaluations

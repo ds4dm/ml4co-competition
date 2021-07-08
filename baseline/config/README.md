@@ -16,7 +16,8 @@ as a starting point for deriving an improved configuration with SMAC, do the fol
 
 	3. Run `python ../../baseline/config/run_training.py PROBLEM`. The optional arguments
 	`-t TIMELIMIT` (timelimit for evaluation of each instance in SMAC; default: 300),
-	`-i NINSTANCES` (number of instances to use for training; default: 10) and 
+	`-i NINSTANCES` (number of instances to use for training; default: 10),
+	`-s SEED` (random seed for selection of training instances) and 
 	`-e NEVALUATIONS` (number of SMAC evaluations per instance; default: 10) can be set.
 	If more than 40 different parameters should be solved, SMAC's initial
 	design needs to be changed (since the default design can only handle <40
@@ -26,4 +27,7 @@ as a starting point for deriving an improved configuration with SMAC, do the fol
 
 	4. After SMAC finishes, the best found parameter settings are printed and can be
 	added to your Policy class.
+
+	5. For your submission, you need to include `init.sh` and `conda.yaml` as well as
+	`agents/config.py` with your (updated) Policy class.
 	

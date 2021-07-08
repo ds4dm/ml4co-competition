@@ -1,4 +1,4 @@
-ing score function ('s'um, 'p'roduct, 'q'uotient)
+# branching score function ('s'um, 'p'roduct, 'q'uotient)
 # [type: char, advanced: TRUE, range: {spq}, default: p]
 branching/scorefunc = p
 
