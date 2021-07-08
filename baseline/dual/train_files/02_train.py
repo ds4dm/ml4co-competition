@@ -130,21 +130,20 @@ if __name__ == "__main__":
     top_k = [1, 3, 5, 10]
 
     # get sample directory
-    home_dir = os.path.expandvars("$HOME")
     if args.problem == 'item_placement':
-        train_files = glob.glob(f'{home_dir}/train_files/samples/1_item_placement/train/sample_*.pkl')
-        valid_files = glob.glob(f'{home_dir}/train_files/samples/1_item_placement/valid/sample_*.pkl')
-        running_dir = f'{home_dir}/train_files/trained_models/item_placement'
+        train_files = glob.glob('train_files/samples/1_item_placement/train/sample_*.pkl')
+        valid_files = glob.glob('train_files/samples/1_item_placement/valid/sample_*.pkl')
+        running_dir = 'train_files/trained_models/item_placement'
 
     elif args.problem == 'load_balancing':
-        train_files = glob.glob(f'{home_dir}/train_files/samples/2_load_balancing/train/sample_*.pkl')
-        valid_files = glob.glob(f'{home_dir}/train_files/samples/2_load_balancing/valid/sample_*.pkl')
-        running_dir = f'{home_dir}/train_files/trained_models/load_balancing'
+        train_files = glob.glob('train_files/samples/2_load_balancing/train/sample_*.pkl')
+        valid_files = glob.glob('train_files/samples/2_load_balancing/valid/sample_*.pkl')
+        running_dir = 'train_files/trained_models/load_balancing'
 
     elif args.problem == 'anonymous':
-        train_files = glob.glob(f'{home_dir}/train_files/samples/3_anonymous/train/sample_*.pkl')
-        valid_files = glob.glob(f'{home_dir}/train_files/samples/3_anonymous/valid/sample_*.pkl')
-        running_dir = f'{home_dir}/train_files/trained_models/anonymous'
+        train_files = glob.glob('train_files/samples/3_anonymous/train/sample_*.pkl')
+        valid_files = glob.glob('train_files/samples/3_anonymous/valid/sample_*.pkl')
+        running_dir = 'train_files/trained_models/anonymous'
 
     else:
         raise NotImplementedError
@@ -167,7 +166,8 @@ if __name__ == "__main__":
     import torch.nn.functional as F
     import torch_geometric
     from utilities import log, pad_tensor, GraphDataset, Scheduler
-    from agent_model import GNNPolicy
+    sys.path.insert(0,'.')
+    from model import GNNPolicy
 
     # randomization setup
     rng = np.random.RandomState(args.seed)

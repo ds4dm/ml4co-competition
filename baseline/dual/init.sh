@@ -11,7 +11,3 @@ conda install pytorch==1.9.0 torchvision torchaudio cudatoolkit=10.2 -c pytorch
 
 # install pytorch geometric
 conda install pytorch-geometric -c rusty1s -c conda-forge
-
-# TODO: remove when 7.0 has been merged in maistream ecole
-conda uninstall ecole -y
-conda install -c conda-forge/label/ecole_dev ecole -y

@@ -1,9 +1,8 @@
-import os
 import torch
 import ecole as ec
 import numpy as np
 
-from agents.agent_model import GNNPolicy
+from model import GNNPolicy
 
 
 class ObservationFunction(ec.observation.NodeBipartite):
@@ -21,8 +20,7 @@ class Policy():
         self.rng = np.random.RandomState()
 
         # get parameters
-        home_dir = os.path.expandvars("$HOME")
-        params_path = f'{home_dir}/agents/trained_models/{problem}/best_params.pkl'
+        params_path = 'agents/trained_models/{problem}/best_params.pkl'
 
         # set up policy
         self.device = f"cuda:0"

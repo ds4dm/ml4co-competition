@@ -13,9 +13,7 @@ import numpy as np
 from pathlib import Path
 
 # import environment
-home_dir = Path(os.path.expandvars("$HOME"))
-competition_dir = str(home_dir.parent.parent.resolve())
-sys.path.append(competition_dir)
+sys.path.append('../..')
 from common.environments import Branching as Environment
 
 
@@ -325,19 +323,19 @@ if __name__ == '__main__':
 
     # get instances
     if args.problem == 'item_placement':
-        instances_train = glob.glob(f'{competition_dir}/instances/1_item_placement/train/*.mps.gz')
-        instances_valid = glob.glob(f'{competition_dir}/instances/1_item_placement/valid/*.mps.gz')
-        out_dir = str(home_dir) + '/train_files/samples/1_item_placement'
+        instances_train = glob.glob('../../instances/1_item_placement/train/*.mps.gz')
+        instances_valid = glob.glob('../../instances/1_item_placement/valid/*.mps.gz')
+        out_dir = 'train_files/samples/1_item_placement'
 
     elif args.problem == 'load_balancing':
-        instances_train = glob.glob(f'{competition_dir}/instances/2_load_balancing/train/*.mps.gz')
-        instances_valid = glob.glob(f'{competition_dir}/instances/2_load_balancing/valid/*.mps.gz')
-        out_dir = str(home_dir) + '/train_files/samples/2_load_balancing'
+        instances_train = glob.glob('../../instances/2_load_balancing/train/*.mps.gz')
+        instances_valid = glob.glob('../../instances/2_load_balancing/valid/*.mps.gz')
+        out_dir = 'train_files/samples/2_load_balancing'
 
     elif args.problem == 'anonymous':
-        instances_train = glob.glob(f'{competition_dir}/instances/3_anonymous/train/*.mps.gz')
-        instances_valid = glob.glob(f'{competition_dir}/instances/3_anonymous/valid/*.mps.gz')
-        out_dir = str(home_dir) + '/train_files/samples/3_anonymous'
+        instances_train = glob.glob('../../instances/3_anonymous/train/*.mps.gz')
+        instances_valid = glob.glob('../../instances/3_anonymous/valid/*.mps.gz')
+        out_dir = 'train_files/samples/3_anonymous'
 
     else:
         raise NotImplementedError
