@@ -1,0 +1,8 @@
+version: '3'
+services:
+  shell:
+    build:
+      context: .
+    volumes:
+      - .:/workdir
+    working_dir: /workdir
