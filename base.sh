@@ -1,3 +1,5 @@
+# copied from singularity/base.def
+
 # Install Mamba (Conda alternative) through Mambaforge
 readonly mamba_installer="Mambaforge-$(uname)-$(uname -m).sh"
 readonly mamba_version="4.10.1-4"
