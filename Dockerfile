@@ -8,5 +8,7 @@ RUN apt-get update
 RUN apt-get install --yes --no-install-recommends wget git openssh-client tar gzip ca-certificates
 RUN apt-get clean
 
-COPY base.sh /workdir/base.sh
-RUN bash /workdir/base.sh
+COPY base.sh /base.sh
+RUN bash /base.sh
+
+WORKDIR /workdir
