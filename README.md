@@ -1,3 +1,12 @@
+# Hello Kinaxis Folks
+To activate the conda environment in `submissions/example/conda.yaml`:
+```bash
+docker build . -t ml4co
+docker run -it -v `pwd`:/workdir ml4co 
+source conda_env_create.sh
+conda activate ml4co
+```
+
 ## Machine Learning for Combinatorial Optimization - NeurIPS 2021 Competition
 
 **[Official website](https://www.ecole.ai/2021/ml4co-competition/)**: competition guidelines, team registration, rules, and leaderboard.
