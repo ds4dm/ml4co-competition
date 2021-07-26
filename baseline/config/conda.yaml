@@ -1,0 +1,26 @@
+channels:
+  - conda-forge
+  - defaults
+
+dependencies:
+  # Minimal dependencies for the competition
+  - python=3.7
+  - scip=7.0.3
+  - ecole=0.7.2
+  - numpy
+  - pyscipopt
+
+  # additional conda dependencies go here
+  - smac
+  - scipy=1.6.3
+
+  # additional pip dependencies go here
+  # - pip
+  # - pip:
+  #   - something
+  #   - git+https://github.com/user/bar
+  #   - url
+
+  # Please send us a snapshot of your environment as well
+  # to help us troubleshoot potential issues
+  # conda env export --no-builds

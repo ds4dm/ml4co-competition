@@ -1,0 +1,67 @@
+# branching score function ('s'um, 'p'roduct, 'q'uotient)
+# [type: char, advanced: TRUE, range: {spq}, default: p]
+branching/scorefunc = p
+
+# branching score factor to weigh downward and upward gain prediction in sum score function
+# [type: real, advanced: TRUE, range: [0,1], default: 0.167]
+branching/scorefac = 0.167
+
+# should branching on binary variables be preferred?
+# [type: bool, advanced: FALSE, range: {TRUE,FALSE}, default: FALSE]
+branching/preferbinary = FALSE
+
+# minimal relative distance of branching point to bounds when branching on a continuous variable
+# [type: real, advanced: FALSE, range: [0,0.5], default: 0.2]
+branching/clamp = 0.2
+
+# fraction by which to move branching point of a continuous variable towards the middle of the domain; a value of 1.0 leads to branching always in the middle of the domain
+# [type: real, advanced: FALSE, range: [0,1], default: 0.75]
+branching/midpull = 0.75
+
+# multiply midpull by relative domain width if the latter is below this value
+# [type: real, advanced: FALSE, range: [0,1], default: 0.5]
+branching/midpullreldomtrig = 0.5
+
+# strategy for normalization of LP gain when updating pseudocosts of continuous variables (divide by movement of 'l'p value, reduction in 'd'omain width, or reduction in domain width of 's'ibling)
+# [type: char, advanced: FALSE, range: {dls}, default: s]
+branching/lpgainnormalize = s
+
+# LP pricing strategy ('l'pi default, 'a'uto, 'f'ull pricing, 'p'artial, 's'teepest edge pricing, 'q'uickstart steepest edge pricing, 'd'evex pricing)
+# [type: char, advanced: FALSE, range: {lafpsqd}, default: l]
+lp/pricing = l
+
+# maximum age a dynamic column can reach before it is deleted from the LP (-1: don't delete columns due to aging)
+# [type: int, advanced: TRUE, range: [-1,2147483647], default: 10]
+lp/colagelimit = 10
+
+# maximum age a dynamic row can reach before it is deleted from the LP (-1: don't delete rows due to aging)
+# [type: int, advanced: TRUE, range: [-1,2147483647], default: 10]
+lp/rowagelimit = 10
+
+# child selection rule ('d'own, 'u'p, 'p'seudo costs, 'i'nference, 'l'p value, 'r'oot LP value difference, 'h'ybrid inference/root LP value difference)
+# [type: char, advanced: FALSE, range: {dupilrh}, default: h]
+nodeselection/childsel = h
+
+# minimal orthogonality for a cut to enter the LP
+# [type: real, advanced: FALSE, range: [0,1], default: 0.9]
+separating/minortho = 0.9
+
+# minimal orthogonality for a cut to enter the LP in the root node
+# [type: real, advanced: FALSE, range: [0,1], default: 0.9]
+separating/minorthoroot = 0.9
+
+# maximal number of cuts separated per separation round (0: disable local separation)
+# [type: int, advanced: FALSE, range: [0,2147483647], default: 100]
+separating/maxcuts = 100
+
+# maximal number of separated cuts at the root node (0: disable root node separation)
+# [type: int, advanced: FALSE, range: [0,2147483647], default: 2000]
+separating/maxcutsroot = 2000
+
+# maximum age a cut can reach before it is deleted from the global cut pool, or -1 to keep all cuts
+# [type: int, advanced: TRUE, range: [-1,2147483647], default: 80]
+separating/cutagelimit = 80
+
+# separation frequency for the global cut pool (-1: disable global cut pool, 0: only separate pool at the root)
+# [type: int, advanced: FALSE, range: [-1,65534], default: 10]
+separating/poolfreq = 10
