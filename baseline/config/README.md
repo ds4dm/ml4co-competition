@@ -2,11 +2,11 @@
 
 The training scripts and a pre-trained model for the configuration task can be
 found here. This model tries to find good parameter settings by using the hyperparameter
-tuning tool SMAC[https://automl.github.io/SMAC3/master/installation.html].
+tuning tool [SMAC](https://automl.github.io/SMAC3/master/installation.html).
 The pre-trained model can be found in `agents/config.py`. To use this baseline
 as a starting point for deriving an improved configuration with SMAC, do the following:
 
-1. Make sure SMAC is installed (instructions can be found here[https://automl.github.io/SMAC3/master/installation.html#])
+1. Make sure SMAC is installed (instructions can be found [here](https://automl.github.io/SMAC3/master/installation.html))
 and scipy version 1.6.x or older is used.
 
 2. Modify the file `parameters_to_tune.txt` to include (or exclude) all
