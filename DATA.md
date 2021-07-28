@@ -1,8 +1,10 @@
 ### Data description
 
-The training instances can been downloaded 
+#### Training datasets
+
+The public instances can been downloaded 
 [here](https://drive.google.com/file/d/1MytdY3IwX_aFRWdoc0mMfDN9Xg1EKUuq/view?usp=sharing),
-and placed inside the `instances` folder
+and are to placed inside the `instances` folder
 ```
 instances/    -> the datasets
 ```
@@ -27,10 +29,21 @@ instances/
 are free to use all the provided instances in whichever way they like without any restriction.
 All the instances included in `train` and `valid` can be considered training instances.
 
+#### Test datasets
+
 The test instances used to evaluate the submissions
 will be kept hidden until the end of the competition.
+```
+instances/
+  1_item_placement/
+    test/           -> 100 instances
+  2_load_balancing/
+    test/           -> 100 instances
+  3_anonymous/
+    test/           -> 20 instances
+```
 
-#### Instance files
+#### File formats
 
 Each problem instance is composed of two files which follows the same naming pattern, for instance,
 ```
@@ -48,3 +61,8 @@ content look as follows:
 Those initial bounds were obtained as follows:
  - primal bound: the value of the first feasible solution found by the SCIP solver
  - dual bound: the value of the first LP relaxation solved by the SCIP solver
+
+#### Problem benchmark 1: Balanced Item Placement
+
+#### Problem benchmark 2: Workload Apportionment
+
