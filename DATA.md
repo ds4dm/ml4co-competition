@@ -137,7 +137,7 @@ There are ![formula](https://render.githubusercontent.com/render/math?math=I) wo
 ![formula](https://render.githubusercontent.com/render/math?math=J) workloads.
 Each worker ![formula](https://render.githubusercontent.com/render/math?math=i)
 has a fixed capacity and activation cost. Each workload
-![formula](https://render.githubusercontent.com/render/math?math=j) has a fixed capacity requirement
+![formula](https://render.githubusercontent.com/render/math?math=j) has a fixed amount of work required
 and a set of allowed workers. The goal is to minimize the total cost for processing
 all workloads, under the constraint that any one worker is allowed to fail (robust apportionment).
 
@@ -147,7 +147,7 @@ all workloads, under the constraint that any one worker is allowed to fail (robu
 
 ![formula](https://render.githubusercontent.com/render/math?math=\textit{Cost}_{i}) the activation cost of worker ![formula](https://render.githubusercontent.com/render/math?math=i).
 
-![formula](https://render.githubusercontent.com/render/math?math=\textit{Load}_{j}) the amount of work required for workload ![formula](https://render.githubusercontent.com/render/math?math=j).
+![formula](https://render.githubusercontent.com/render/math?math=\textit{Load}_{j}) the amount of work required to process workload ![formula](https://render.githubusercontent.com/render/math?math=j).
 
 ![formula](https://render.githubusercontent.com/render/math?math=\textit{Allowed}_{j}) the set of workers allowed to process workload ![formula](https://render.githubusercontent.com/render/math?math=j).
 
