@@ -64,7 +64,7 @@ Here we give a short description of each problem benchmark. In particular,
 we describe how each problem instance is modeled as a Mixed-Integer Linear
 Program (MILP).
 
-#### 1: Balanced Item Placement
+#### Benchmark 1: Balanced Item Placement
 
 There are ![formula](https://render.githubusercontent.com/render/math?math=I) items,
 ![formula](https://render.githubusercontent.com/render/math?math=B) bins, and
@@ -78,43 +78,46 @@ to place all items in bins, while minimizing the imbalance of the resources used
 
 ##### Constants
 
-`Capacity_$b_$r`: the amount of resource `r` available in bin `b`
+![formula](https://render.githubusercontent.com/render/math?math=\textit{Capacity}_{b,r}) the amount of resource ![formula](https://render.githubusercontent.com/render/math?math=r)
+available in bin ![formula](https://render.githubusercontent.com/render/math?math=b).
 
-![formula](https://render.githubusercontent.com/render/math?math=\forall_{b,r},\quad%20\textit{Capacity}_{b,r}%20\in%20\mathbb{R}_{\geq%200})
-
-`Size_$i_$r`: the amount of resource `r` required by item `i`
-
-![formula](https://render.githubusercontent.com/render/math?math=\forall_{i,r},\quad%20\textit{Size}_{i,r}%20\in%20\mathbb{R}_{\geq%200})
+![formula](https://render.githubusercontent.com/render/math?math=\textit{Size}_{i,r}) the amount of resource ![formula](https://render.githubusercontent.com/render/math?math=r)
+required by item ![formula](https://render.githubusercontent.com/render/math?math=i).
 
 ##### Decision variables
 
-`place_$i_$b`: a binary variable for indicating whether to place item `i` in bin `b`.
+`place_$i_$b`: a binary variable indicating whether to place item
+![formula](https://render.githubusercontent.com/render/math?math=i) in bin
+![formula](https://render.githubusercontent.com/render/math?math=b).
 
-![formula](https://render.githubusercontent.com/render/math?math=\forall_{i,b},\quad%20\textit{place}_{i,b}%20\in%20\\{0,1\\})
+![formula](https://render.githubusercontent.com/render/math?math=\forall{i,b},\quad%20\textit{place}_{i,b}%20\in%20\\{0,1\\})
 
 ##### Implicit decision variables
 
-`deficit_$b_$r`: a continuous variable between 0 and 1 for tracking the normalized imbalance of resource `r` in bin `b`.
+`deficit_$b_$r`: a continuous variable between 0 and 1 tracking the normalized imbalance of resource
+![formula](https://render.githubusercontent.com/render/math?math=r) in bin
+![formula](https://render.githubusercontent.com/render/math?math=b).
 
-![formula](https://render.githubusercontent.com/render/math?math=\forall_{b,r},\quad%20\textit{deficit}_{b,r}%20\in%20[0,1])
+![formula](https://render.githubusercontent.com/render/math?math=\forall{b,r},\quad%20\textit{deficit}_{b,r}%20\in%20[0,1])
 
-`max_deficit_$r`: a continuous variable between 0 and 1 for tracking the max normalized imbalance of resource `r` across all bins.
+`max_deficit_$r`: a continuous variable between 0 and 1 tracking the max normalized imbalance of resource
+![formula](https://render.githubusercontent.com/render/math?math=r) across all bins.
 
-![formula](https://render.githubusercontent.com/render/math?math=\forall_{r},\quad%20\textit{max\\_deficit}_{r}%20\in%20[0,1])
+![formula](https://render.githubusercontent.com/render/math?math=\forall{r},\quad%20\textit{max\\_deficit}_{r}%20\in%20[0,1])
 
 ##### Constraints
 
 `copies_ct_$i`: all items must be placed once.
 
-![formula](https://render.githubusercontent.com/render/math?math=\forall_i,\quad%20\sum_b%20\textit{place}_{i,b}%20=%201)
+![formula](https://render.githubusercontent.com/render/math?math=\forall{i},\quad%20\sum_b%20\textit{place}_{i,b}%20=%201)
 
 `supply_ct_$b_$r`: bin capacities must be respected.
 
-![formula](https://render.githubusercontent.com/render/math?math=\forall_{b,r},\quad%20\sum_i%20\textit{Size}_{i,r}%20\times%20\textit{place}_{i,b}%20\leq%20\textit{Capacity}_{b,r})
+![formula](https://render.githubusercontent.com/render/math?math=\forall{b,r},\quad%20\sum_i%20\textit{Size}_{i,r}%20\times%20\textit{place}_{i,b}%20\leq%20\textit{Capacity}_{b,r})
 
 `deficit_ct_$b_$r`: normalized imbalance of resources is tracked for each bin and resource.
 
-![formula](https://render.githubusercontent.com/render/math?math=\forall_{b,r},\quad%201%20-%20\frac{B}{\sum_i%20\textit{Size}_{i,r}}\sum_i%20\textit{Size}_{i,r}%20\times%20\textit{place}_{i,b}%20=%20\textit{deficit}_{b,r})
+![formula](https://render.githubusercontent.com/render/math?math=\forall{b,r},\quad%201%20-%20\frac{B}{\sum_i%20\textit{Size}_{i,r}}\sum_i%20\textit{Size}_{i,r}%20\times%20\textit{place}_{i,b}%20=%20\textit{deficit}_{b,r})
 
 `max_deficit_ct_$r`: max normalized imbalance of resources across all bins is tracked for each resource.
 
@@ -124,13 +127,66 @@ to place all items in bins, while minimizing the imbalance of the resources used
 
 Minimize the imbalance of resources used across all bins.
 
-![formula](https://render.githubusercontent.com/render/math?math=\text{minimize}\quad%2010\times%20B\times%20R%20\sum_r%20\textit{max\\_deficit}_{r}%2B\sum_{b,r}\textit{deficit}_{b,r})
+![formula](https://render.githubusercontent.com/render/math?math=\text{minimize}\quad%2010\times%20B\times%20R%20\times\sum_r%20\textit{max\\_deficit}_{r}%2B\sum_{b,r}\textit{deficit}_{b,r})
 
 
-#### 2: Workload Apportionment
+#### Benchmark 2: Workload Apportionment
+
+There are ![formula](https://render.githubusercontent.com/render/math?math=I) workers and
+![formula](https://render.githubusercontent.com/render/math?math=J) workloads.
+Each worker ![formula](https://render.githubusercontent.com/render/math?math=i)
+has a fixed capacity and activation cost. Each workload
+![formula](https://render.githubusercontent.com/render/math?math=j) has a fixed capacity requirement
+and a set of allowed workers. The goal is to minimize the total cost for processing
+all workloads, under the constraint that any one worker is allowed to fail (robust apportionment).
+
+##### Constants
+
+![formula](https://render.githubusercontent.com/render/math?math=\textit{Capacity}_{i}) the capacity of worker ![formula](https://render.githubusercontent.com/render/math?math=i).
+
+![formula](https://render.githubusercontent.com/render/math?math=\textit{Cost}_{i}) the activation cost of worker ![formula](https://render.githubusercontent.com/render/math?math=i).
+
+![formula](https://render.githubusercontent.com/render/math?math=\textit{Load}_{j}) the amount of work required for workload ![formula](https://render.githubusercontent.com/render/math?math=j).
+
+![formula](https://render.githubusercontent.com/render/math?math=\textit{Allowed}_{j}) the set of workers allowed to process workload ![formula](https://render.githubusercontent.com/render/math?math=j).
+
+##### Decision variables
+
+`reserved_capacity_$i_$j`: a non-negative continuous variable indicating the amount
+of work reserved on worker ![formula](https://render.githubusercontent.com/render/math?math=i)
+for workload ![formula](https://render.githubusercontent.com/render/math?math=j).
+
+![formula](https://render.githubusercontent.com/render/math?math=\forall{i,j},\quad%20\textit{reserved\\_capacity}_{i,j}%20\in%20[0,\infty])
+
+`worker_used_$i`: a binary variable indicating whether worker ![formula](https://render.githubusercontent.com/render/math?math=i) must be activated.
+
+![formula](https://render.githubusercontent.com/render/math?math=\forall{i,j},\quad%20\textit{worker\\_used}_{i}%20\in%20\\{0,1\\})
+
+##### Constraints
+
+(encoded as variable upper bound for `reserved_capacity_$i_$j`): only allowed workers can process workloads.
+
+![formula](https://render.githubusercontent.com/render/math?math=\forall{i%20\notin%20\textit{Allowed}_{j}},\forall{j},\quad%20\textit{reserved\\_capacity}_{i,j}\leq%200)
+
+`worker_capacity_ct_$i`: worker capacity must be respected.
+
+![formula](https://render.githubusercontent.com/render/math?math=\forall{i},\quad%20\sum_{j}\textit{reserved\\_capacity}_{i,j}\leq%20\textit{Capacity}_{i})
+
+`worker_used_ct_$i_$j`: activation indicator is tracked for each worker.
+
+![formula](https://render.githubusercontent.com/render/math?math=\forall{i,j},\quad%20\sum_{j}\textit{reserved\\_capacity}_{i,j}\leq%20\max(\textit{Capacity}_{i},\textit{Load}_{j})\times\textit{worker\\_used}_{i})
+
+`workload_ct_$j_failure_$i`: there must be sufficient capacity for each workload in the scenario where any one of the workers is unavailable.
+
+![formula](https://render.githubusercontent.com/render/math?math=\forall{i%20\in%20\textit{Allowed}_{j}},\forall{j},\quad%20\sum_{i'\neq%20i}\textit{reserved\\_capacity}_{i',j}\geq%20\textit{Load}_{j})
+
+##### Objective
+
+Minimize the total cost for processing all workloads.
+
+![formula](https://render.githubusercontent.com/render/math?math=\text{minimize}\quad%20\sum_{i}%20\textit{Cost}_{i}\times\textit{worker\\_used}_{i})
 
 
-
-#### 3: Anonymous Problem
+#### Benchmark 3: Anonymous Problem
 
 The third problem benchmark is anonymous, and thus we do not provide a description of the problem instances.
