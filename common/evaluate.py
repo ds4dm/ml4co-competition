@@ -55,6 +55,10 @@ if __name__ == '__main__':
     print(f"Processing instances from {instances_path.resolve()}")
     instance_files = list(instances_path.glob('*.mps.gz'))
 
+    if args.problem == 'anonymous': 
+        # special case: evaluate the anonymous instances five times with different seeds
+        instance_files = instance_files * 5
+
     print(f"Saving results to {results_file.resolve()}")
     results_file.parent.mkdir(parents=True, exist_ok=True)
     results_fieldnames = ['instance', 'seed', 'initial_primal_bound', 'initial_dual_bound', 'objective_offset', 'cumulated_reward']
