@@ -1,9 +1,9 @@
-Bootstrap: library
-From: ubuntu:20.04
+Bootstrap: docker
+From: nvidia/cuda:11.4.0-base-ubuntu20.04
 
 %labels
-	Author Antoine Prouvost
-	Version v0.0.1
+	Author Antoine Prouvost, Maxime Gasse
+	Version v0.0.2
 
 %help
 	Singularity image used to evaluate submissions to the NeurIPS 2021 ML4CO competition.
