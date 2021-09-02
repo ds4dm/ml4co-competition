@@ -39,7 +39,10 @@ if __name__ == '__main__':
     )
     args = parser.parse_args()
 
-    print(f"Evaluating the {args.task} task agent.")
+    # check the Ecole version installed
+    assert ec.__version__ == "0.7.3", "Wrong Ecole version."
+
+    print(f"Evaluating the {args.task} task agent on the {args.problem} problem.")
 
     # collect the instance files
     if args.problem == 'item_placement':

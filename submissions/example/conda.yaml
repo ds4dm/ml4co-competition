@@ -7,7 +7,7 @@ dependencies:
 # minimal dependencies for the competition
   - python=3.7
   - scip=7.0.3
-  - ecole=0.7.2
+  - ecole=0.7.3
   - numpy
   - pyscipopt
 
