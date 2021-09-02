@@ -119,7 +119,8 @@ class ConfiguringDynamics(ecole.dynamics.ConfiguringDynamics):
             "timing/enabled",
             "timing/reading",
             "timing/rareclockcheck",
-            "timing/statistictiming"]
+            "timing/statistictiming",
+            "limits/memory"]
 
         for param in forbidden_params:
             if param in action:
