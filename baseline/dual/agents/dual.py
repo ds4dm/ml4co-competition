@@ -20,7 +20,7 @@ class Policy():
         self.rng = np.random.RandomState()
 
         # get parameters
-        params_path = 'agents/trained_models/{problem}/best_params.pkl'
+        params_path = f'agents/trained_models/{problem}/best_params.pkl'
 
         # set up policy
         self.device = f"cuda:0"
