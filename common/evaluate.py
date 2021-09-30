@@ -94,20 +94,19 @@ if __name__ == '__main__':
     # override from command-line argument if provided
     time_limit = getattr(args, "timelimit", time_limit)
 
-    policy = Policy(problem=args.problem)
-    observation_function = ObservationFunction(problem=args.problem)
-
-    integral_function = BoundIntegral()
-
-    env = Environment(
-        time_limit=time_limit,
-        observation_function=observation_function,
-        reward_function=-integral_function,  # negated integral (minimization)
-        scip_params={'limits/memory': 19*1024},  # early stop SCIP before it triggers an OOM kill (20GB)
-    )
-
     # evaluation loop
     for seed, instance in enumerate(instance_files):
+
+        observation_function = ObservationFunction(problem=args.problem)
+        policy = Policy(problem=args.problem)
+
+        integral_function = BoundIntegral()
+
+        env = Environment(
+            time_limit=time_limit,
+            observation_function=observation_function,
+            reward_function=-integral_function  # negated integral (minimization)
+        )
 
         # seed both the agent and the environment (deterministic behavior)
         observation_function.seed(seed)
