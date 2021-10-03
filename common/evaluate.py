@@ -105,7 +105,8 @@ if __name__ == '__main__':
         env = Environment(
             time_limit=time_limit,
             observation_function=observation_function,
-            reward_function=-integral_function  # negated integral (minimization)
+            reward_function=-integral_function  # negated integral (minimization),
+            scip_params={'limits/memory': 19*1024},  # early stop SCIP before it triggers an OOM kill (20GB)
         )
 
         # seed both the agent and the environment (deterministic behavior)
