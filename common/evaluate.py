@@ -78,18 +78,21 @@ if __name__ == '__main__':
         from environments import RootPrimalSearch as Environment
         from rewards import TimeLimitPrimalIntegral as BoundIntegral
         time_limit = 5*60
+        memory_limit = 8796093022207  # maximum
 
     elif args.task == "dual":
         from agents.dual import Policy, ObservationFunction
         from environments import Branching as Environment
         from rewards import TimeLimitDualIntegral as BoundIntegral
         time_limit = 15*60
+        memory_limit = 8796093022207  # maximum
 
     elif args.task == "config":
         from agents.config import Policy, ObservationFunction
         from environments import Configuring as Environment
         from rewards import TimeLimitPrimalDualIntegral as BoundIntegral
         time_limit = 15*60
+        memory_limit = 12*1024  # 12 GiB, early stop SCIP before it triggers an OOM kill (20GB)
 
     # override from command-line argument if provided
     time_limit = getattr(args, "timelimit", time_limit)
@@ -106,7 +109,7 @@ if __name__ == '__main__':
             time_limit=time_limit,
             observation_function=observation_function,
             reward_function=-integral_function,  # negated integral (minimization)
-            scip_params={'limits/memory': 15*1024},  # early stop SCIP before it triggers an OOM kill (20GB)
+            scip_params={'limits/memory': memory_limit},
         )
 
         # seed both the agent and the environment (deterministic behavior)
