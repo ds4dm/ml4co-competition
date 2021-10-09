@@ -30,19 +30,19 @@ Run the evaluation of your team within the container.
 
 ```bash
 # Primal task
-sh singularity/03_participant_run.sh YOUR_TEAM_NAME primal item_placement
-sh singularity/03_participant_run.sh YOUR_TEAM_NAME primal load_balancing
-sh singularity/03_participant_run.sh YOUR_TEAM_NAME primal anonymous
+bash singularity/03_participant_run.sh YOUR_TEAM_NAME primal item_placement
+bash singularity/03_participant_run.sh YOUR_TEAM_NAME primal load_balancing
+bash singularity/03_participant_run.sh YOUR_TEAM_NAME primal anonymous
 
 # Dual task
-sh singularity/03_participant_run.sh YOUR_TEAM_NAME dual item_placement
-sh singularity/03_participant_run.sh YOUR_TEAM_NAME dual load_balancing
-sh singularity/03_participant_run.sh YOUR_TEAM_NAME dual anonymous
+bash singularity/03_participant_run.sh YOUR_TEAM_NAME dual item_placement
+bash singularity/03_participant_run.sh YOUR_TEAM_NAME dual load_balancing
+bash singularity/03_participant_run.sh YOUR_TEAM_NAME dual anonymous
 
 # Config task
-sh singularity/03_participant_run.sh YOUR_TEAM_NAME config item_placement
-sh singularity/03_participant_run.sh YOUR_TEAM_NAME config load_balancing
-sh singularity/03_participant_run.sh YOUR_TEAM_NAME config anonymous
+bash singularity/03_participant_run.sh YOUR_TEAM_NAME config item_placement
+bash singularity/03_participant_run.sh YOUR_TEAM_NAME config load_balancing
+bash singularity/03_participant_run.sh YOUR_TEAM_NAME config anonymous
 ```
 
 **Note**: additional argument such as `--timelimit T` or `--debug` can also be provided here,
