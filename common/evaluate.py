@@ -151,10 +151,13 @@ if __name__ == '__main__':
         # loop over the environment
         while not done:
             action = policy(action_set, observation)
-            observation, action_set, reward, done, info = env.step(action)
 
             if args.debug:
                 print(f"  action: {action}")
+
+            observation, action_set, reward, done, info = env.step(action)
+
+            if args.debug:
                 print(f"  info: {info}")
                 print(f"  reward: {reward}")
                 print(f"  action_set: {action_set}")
