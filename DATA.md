@@ -191,3 +191,5 @@ Minimize the total cost for processing all workloads.
 #### Benchmark 3: Anonymous Problem
 
 The third problem benchmark is anonymous, and thus we do not provide a description of the problem instances.
+
+EDIT: we can now reveal that the third problem benchmark consists of a curated set of instances from the [MIRPLIB](https://mirplib.scl.gatech.edu/) library.
