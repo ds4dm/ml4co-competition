@@ -28,6 +28,8 @@ All the instances included in `train` and `valid` can be considered training ins
 
 ### Test datasets
 
+Post-competition update: the test instances can be downloaded [here](https://drive.google.com/file/d/18rlu2gjACLH5jH7zJYBYyGb3vt-Y-pLS/view?usp=sharing).
+
 The test instances used to evaluate the submissions
 will be kept hidden until the end of the competition.
 ```
