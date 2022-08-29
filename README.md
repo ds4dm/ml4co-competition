@@ -1,5 +1,9 @@
 ## Machine Learning for Combinatorial Optimization - NeurIPS 2021 Competition
 
+(please cite the following paper)
+
+**[The Machine Learning for Combinatorial Optimization Competition (ML4CO): Results and Insights](https://proceedings.mlr.press/v176/gasse22a.html)** Maxime Gasse, Simon Bowly, Quentin Cappart, Jonas Charfreitag, Laurent Charlin, Didier Chételat, Antonia Chmiela, Justin Dumouchelle, Ambros Gleixner, Aleksandr M. Kazachkov, Elias Khalil, Pawel Lichocki, Andrea Lodi, Miles Lubin, Chris J. Maddison, Morris Christopher, Dimitri J. Papageorgiou, Augustin Parjadis, Sebastian Pokutta, Antoine Prouvost, Lara Scavuzzo, Giulia Zarpellon, Linxin Yang, Sha Lai, Akang Wang, Xiaodong Luo, Xiang Zhou, Haohan Huang, Shengcheng Shao, Yuanming Zhu, Dong Zhang, Tao Quan, Zixuan Cao, Yang Xu, Zhewei Huang, Shuchang Zhou, Chen Binbin, He Minggui, Hao Hao, Zhang Zhiyu, An Zhiwu, Mao Kun, Proceedings of the NeurIPS 2021 Competitions and Demonstrations Track, PMLR 176:220-231, 2022.
+
 **[Official website](https://www.ecole.ai/2021/ml4co-competition/)**: competition guidelines, team registration, rules, and leaderboard.
 
 
